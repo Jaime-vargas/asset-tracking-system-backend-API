@@ -1,6 +1,7 @@
 package com.control_activos.sks.control_activos.services;
 
 import com.control_activos.sks.control_activos.enums.OperationNotAllowedExceptionEnum;
+import com.control_activos.sks.control_activos.enums.ReportPriorityEnum;
 import com.control_activos.sks.control_activos.enums.ResourceNotFoundExceptionEnum;
 import com.control_activos.sks.control_activos.exception.OperationNotAllowedException;
 import com.control_activos.sks.control_activos.exception.ResourceNotFoundException;
@@ -13,7 +14,6 @@ import com.control_activos.sks.control_activos.repository.HardwareRepository;
 import com.control_activos.sks.control_activos.repository.ReportRepository;
 import com.control_activos.sks.control_activos.repository.UserEntityRepository;
 import jakarta.transaction.Transactional;
-import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,8 +37,7 @@ public class ReportService {
     public ReportDTO saveReport(Long hardwareId, ReportDTO reportDTO) {
 
         UserEntity userEntity = userEntityRepository.findById(1L).get();
-
-        Hardware hardware = hardwareRepository.findById(hardwareId).get();
+        Hardware hardware = hardwareRepository.findById(hardwareId).get(); // #TODO validate hardware exist with optional
 
         Report report = new Report();
         report.setTitle(reportDTO.getTitle());
@@ -48,6 +47,8 @@ public class ReportService {
         report.setCreatedAt(OffsetDateTime.now()); // updated dado of camera
         report.setReportedBy(userEntity); // #TODO set real user in report
         report = reportRepository.save(report);
+        report.setDueDate(OffsetDateTime.now()); // #TODO Implement due date logic
+        report.setPriority(ReportPriorityEnum.valueOf(reportDTO.getPriority()));
         return Mapper.entityToDTO(report);
     }
 

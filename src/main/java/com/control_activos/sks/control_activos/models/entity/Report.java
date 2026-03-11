@@ -1,5 +1,6 @@
 package com.control_activos.sks.control_activos.models.entity;
 
+import com.control_activos.sks.control_activos.enums.ReportPriorityEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -38,4 +39,7 @@ public class Report {
     private OffsetDateTime createdAt;
     private OffsetDateTime updatedAt;
     private OffsetDateTime closedAt;
+    private OffsetDateTime dueDate;  // #TODO: Implement due date logic
+    @Enumerated(EnumType.STRING)
+    private ReportPriorityEnum priority;
 }

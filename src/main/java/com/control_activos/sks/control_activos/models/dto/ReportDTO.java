@@ -24,4 +24,6 @@ public class ReportDTO {
     private String createdAt;
     private String updatedAt;
     private String closedAt;
+    private String dueDate;
+    private String priority;
 }

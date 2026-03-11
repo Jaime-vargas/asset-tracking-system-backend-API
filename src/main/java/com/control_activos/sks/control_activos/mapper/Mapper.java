@@ -1,5 +1,7 @@
 package com.control_activos.sks.control_activos.mapper;
 
+import com.control_activos.sks.control_activos.enums.ReportPriorityEnum;
+import com.control_activos.sks.control_activos.mapper.reportMapper.ReportMapper;
 import com.control_activos.sks.control_activos.models.dto.*;
 import com.control_activos.sks.control_activos.models.entity.*;
 import jakarta.annotation.Nullable;
@@ -11,6 +13,8 @@ import java.util.Optional;
 
 @Service
 public class Mapper {
+
+    // #TODO: Implments Mapper Class for each entity to DTO conversion, and vice versa if needed.
 
     public static CameraDTO entityToDTO (Camera camera) {
         return new CameraDTO(
@@ -26,7 +30,7 @@ public class Mapper {
                 camera.getMacAddress(),
                 camera.getIpAddress(),
                 Optional.ofNullable(camera.getReports()).orElse(List.of()).stream()
-                        .map(Mapper::entityToDTO).toList()
+                        .map(ReportMapper::toReportTableDTO).toList()
         );
     }
 
@@ -67,7 +71,9 @@ public class Mapper {
                 report.getReportedBy().getFullName(),
                 report.getCreatedAt().toString(),
                 Optional.ofNullable(report.getUpdatedAt()).map(OffsetDateTime::toString).orElse("N/A"),
-                Optional.ofNullable(report.getClosedAt()).map(OffsetDateTime::toString).orElse("N/A")
+                Optional.ofNullable(report.getClosedAt()).map(OffsetDateTime::toString).orElse("N/A"),
+                Optional.ofNullable(report.getDueDate()).map(OffsetDateTime::toString).orElse("N/A"),
+                Optional.ofNullable(report.getPriority()).map(ReportPriorityEnum::getValue).orElse("N/A")
         );
     }
 

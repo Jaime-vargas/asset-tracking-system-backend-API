@@ -1,12 +1,12 @@
 package com.control_activos.sks.control_activos.models.dto;
 
 
+import com.control_activos.sks.control_activos.models.dto.reportDTO.ReportTableDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -26,6 +26,6 @@ public class CameraDTO {
     private String cliente;
     private String macAddress;
     private String ipAddress;
-    private List<ReportDTO> reports; // # TODO reports associated with the camera
+    private List<ReportTableDTO> reports; // # TODO reports associated with the camera
 
 }
