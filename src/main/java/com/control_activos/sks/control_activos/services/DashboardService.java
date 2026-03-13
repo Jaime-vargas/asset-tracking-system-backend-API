@@ -43,7 +43,7 @@ public class DashboardService {
         Long overdueReports = reportRepository.countByActiveTrueAndDueDateBefore(OffsetDateTime.now());
         Long totalHardware = hardwareRepository.count();
         Long totalClients = clientRepository.count();
-        List<ReportTableDTO> recentReports = reportRepository.findTop8ByOrderByCreatedAtDesc().stream()
+        List<ReportTableDTO> recentReports = reportRepository.findTop8ByActiveTrueOrderByCreatedAtDesc().stream()
                 .map(ReportMapper::toReportTableDTO)
                 .toList();
         List<ClientDashboardDTO> recentClients = clientRepository.findTop4ByOrderByNameAscIdAsc().stream()
