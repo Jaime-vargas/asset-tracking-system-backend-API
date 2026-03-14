@@ -30,7 +30,7 @@ Api url: /api/v1/clients
 
 ### Sucursal   
 
-Api url: /api/v1/clients/{client_id}/sucursal
+Api url: /api/v1/clients/{client_id}/branch
 
 # Request
 ```
@@ -49,7 +49,7 @@ Api url: /api/v1/clients/{client_id}/sucursal
 ## Hardware
 ### Camera
 
-Api url: /api/v1/sucursal/{sucursal_id}/camera
+Api url: /api/v1/branch/{sucursal_id}/camera
 
 # Request
 ```
@@ -73,7 +73,7 @@ Api url: /api/v1/sucursal/{sucursal_id}/camera
     "model": "Hikvision DS-2CD2143G0-I",
     "location": "Entrada principal",
     "lastMaintenanceDate": "N/A",
-    "sucursal": "Sucursal Guadalajara",
+    "branch": "Sucursal Guadalajara",
     "cliente": "SKS Enterprise",
     "macAddress": "00:1A:2B:3C:3D:5A",
     "ipAddress": "192.168.1.51",

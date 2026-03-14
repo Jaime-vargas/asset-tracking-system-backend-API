@@ -4,7 +4,6 @@ import com.control_activos.sks.control_activos.enums.ReportPriorityEnum;
 import com.control_activos.sks.control_activos.mapper.reportMapper.ReportMapper;
 import com.control_activos.sks.control_activos.models.dto.*;
 import com.control_activos.sks.control_activos.models.entity.*;
-import jakarta.annotation.Nullable;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
@@ -25,8 +24,8 @@ public class Mapper {
                 camera.getModel(),
                 camera.getLocation(),
                 Optional.ofNullable(camera.getLastMaintenanceDate()).map(OffsetDateTime::toString).orElse("N/A"),
-                camera.getSucursal().getName(),
-                camera.getSucursal().getClient().getName(),
+                camera.getBranch().getName(),
+                camera.getBranch().getClient().getName(),
                 camera.getMacAddress(),
                 camera.getIpAddress(),
                 Optional.ofNullable(camera.getReports()).orElse(List.of()).stream()
@@ -38,7 +37,7 @@ public class Mapper {
         return new ClientDTO(
                 client.getId(),
                 client.getName(),
-                Optional.ofNullable(client.getSucursals()).orElse(List.of())
+                Optional.ofNullable(client.getBranches()).orElse(List.of())
                         .stream().map(Mapper::entityToDTO).toList()
         );
     }
@@ -77,10 +76,10 @@ public class Mapper {
         );
     }
 
-    public static SucursalDTO entityToDTO (Sucursal sucursal) {
-        return new SucursalDTO(
-                sucursal.getId(),
-                sucursal.getName()
+    public static BranchDTO entityToDTO (Branch branch) {
+        return new BranchDTO(
+                branch.getId(),
+                branch.getName()
         );
     }
 

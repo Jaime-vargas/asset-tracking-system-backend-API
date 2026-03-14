@@ -11,8 +11,7 @@ public class ReportMapper {
             report.getId(),
             report.getTitle(),
             Optional.ofNullable(report.getPriority()).map(Object::toString).orElse("N/A"),
-            Optional.ofNullable(report.getDueDate()).map(Object::toString).orElse("N/A"),
-            report.getActive().toString()
+            Optional.ofNullable(report.getDueDate()).map(Object::toString).orElse("N/A")
         );
     }
 }

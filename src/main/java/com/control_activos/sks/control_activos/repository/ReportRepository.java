@@ -16,6 +16,6 @@ public interface ReportRepository extends JpaRepository<Report, Long> {
 
     Long countByActiveTrueAndDueDateBefore(OffsetDateTime dueDate);
 
-    List<Report> findTop8ByActiveTrueOrderByCreatedAtDesc();
+    List<Report> findTop5ByActiveTrueOrderByCreatedAtDesc();
 }
 

@@ -2,13 +2,13 @@ package com.control_activos.sks.control_activos.models.entity;
 
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -34,7 +34,7 @@ public class Hardware {
     private OffsetDateTime lastMaintenanceDate;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sucursal_id", nullable = false)
-    private Sucursal sucursal;
+    private Branch branch;
     @OneToMany(mappedBy = "hardware", cascade = CascadeType.ALL)
     private List<Report> reports;
 }

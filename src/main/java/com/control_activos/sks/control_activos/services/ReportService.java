@@ -47,7 +47,7 @@ public class ReportService {
         report.setCreatedAt(OffsetDateTime.now()); // updated dado of camera
         report.setReportedBy(userEntity); // #TODO set real user in report
         report = reportRepository.save(report);
-        report.setDueDate(OffsetDateTime.now()); // #TODO Implement due date logic
+        report.setDueDate(OffsetDateTime.parse(reportDTO.getDueDate())); // #TODO Implement due date logic
         report.setPriority(ReportPriorityEnum.valueOf(reportDTO.getPriority()));
         return Mapper.entityToDTO(report);
     }

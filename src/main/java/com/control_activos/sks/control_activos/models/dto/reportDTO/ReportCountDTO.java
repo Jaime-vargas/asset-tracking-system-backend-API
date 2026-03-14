@@ -3,11 +3,13 @@ package com.control_activos.sks.control_activos.models.dto.reportDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.time.OffsetDateTime;
+
 @Getter
 @AllArgsConstructor
-public class ReportTableDTO {
-    private Long id;
-    private String title;
-    private String priority;
-    private String dueDate;
+public class ReportCountDTO {
+
+    Long clientId;
+    Long reportId;
+    OffsetDateTime dueDate;
 }

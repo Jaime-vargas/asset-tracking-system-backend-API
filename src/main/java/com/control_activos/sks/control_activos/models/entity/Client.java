@@ -23,6 +23,6 @@ public class Client {
     @Column(unique = true)
     private String name;
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
-    private List<Sucursal> sucursals = new ArrayList<>();
+    private List<Branch> branches = new ArrayList<>();
 
 }

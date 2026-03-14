@@ -1,9 +1,7 @@
 package com.control_activos.sks.control_activos.services;
 
-import com.control_activos.sks.control_activos.mapper.Mapper;
 import com.control_activos.sks.control_activos.mapper.clientMapper.ClientMapper;
 import com.control_activos.sks.control_activos.mapper.reportMapper.ReportMapper;
-import com.control_activos.sks.control_activos.models.dto.ClientDTO;
 import com.control_activos.sks.control_activos.models.dto.DashboardDataDTO;
 import com.control_activos.sks.control_activos.models.dto.clientDTO.ClientDashboardDTO;
 import com.control_activos.sks.control_activos.models.dto.reportDTO.ReportTableDTO;
@@ -15,14 +13,6 @@ import java.util.List;
 
 @Service
 public class DashboardService {
-    /** open reports
-     * overdue reports
-     * total hardware
-     * total clientes
-     * 8 reportes recientes
-     * 4 clientes reciente
-     * total camaras
-     */
 
     private final CameraRepository cameraRepository;
     private final ClientRepository clientRepository;
@@ -43,7 +33,7 @@ public class DashboardService {
         Long overdueReports = reportRepository.countByActiveTrueAndDueDateBefore(OffsetDateTime.now());
         Long totalHardware = hardwareRepository.count();
         Long totalClients = clientRepository.count();
-        List<ReportTableDTO> recentReports = reportRepository.findTop8ByActiveTrueOrderByCreatedAtDesc().stream()
+        List<ReportTableDTO> recentReports = reportRepository.findTop5ByActiveTrueOrderByCreatedAtDesc().stream()
                 .map(ReportMapper::toReportTableDTO)
                 .toList();
         List<ClientDashboardDTO> recentClients = clientRepository.findTop4ByOrderByNameAscIdAsc().stream()

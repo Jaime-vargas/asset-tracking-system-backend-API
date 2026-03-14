@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/sucursals")
+@RequestMapping("/api/v1/branches")
 public class CameraController {
 
     private final CameraService cameraService;
@@ -16,21 +16,21 @@ public class CameraController {
         this.cameraService = cameraService;
     }
 
-    @GetMapping("/{sucursalId}/cameras")
-    public ResponseEntity<List<CameraDTO>> getCameraDTOList (@PathVariable Long sucursalId){
-        List<CameraDTO> cameraDTOList = cameraService.getCameraDTOList(sucursalId);
+    @GetMapping("/{branchId}/cameras")
+    public ResponseEntity<List<CameraDTO>> getCameraDTOList (@PathVariable Long branchId){
+        List<CameraDTO> cameraDTOList = cameraService.getCameraDTOList(branchId);
         return ResponseEntity.ok().body(cameraDTOList);
     }
 
-    @PostMapping("/{sucursalId}/cameras")
-    public ResponseEntity<CameraDTO> saveCamera(@PathVariable Long sucursalId, @RequestBody CameraDTO cameraDTO) {
-        CameraDTO savedCameraDTO = cameraService.saveCamera(sucursalId, cameraDTO);
+    @PostMapping("/{branchId}/cameras")
+    public ResponseEntity<CameraDTO> saveCamera(@PathVariable Long branchId, @RequestBody CameraDTO cameraDTO) {
+        CameraDTO savedCameraDTO = cameraService.saveCamera(branchId, cameraDTO);
         return ResponseEntity.ok().body(savedCameraDTO);
     }
 
-    @PutMapping("/{sucursalId}/cameras/{cameraId}")
-    public ResponseEntity<CameraDTO> editCamera(@PathVariable Long sucursalId, @PathVariable Long cameraId, @RequestBody CameraDTO cameraDTO) {
-        CameraDTO updatedCameraDTO = cameraService.editCamera(sucursalId, cameraId, cameraDTO);
+    @PutMapping("/{branchId}/cameras/{cameraId}")
+    public ResponseEntity<CameraDTO> editCamera(@PathVariable Long branchId, @PathVariable Long cameraId, @RequestBody CameraDTO cameraDTO) {
+        CameraDTO updatedCameraDTO = cameraService.editCamera(branchId, cameraId, cameraDTO);
         return ResponseEntity.ok().body(updatedCameraDTO);
     }
 

@@ -15,6 +15,6 @@ import java.util.List;
 public class ClientDTO {
     private Long id;
     private String name;
-    private List<SucursalDTO> sucursalDTOList;
+    private List<BranchDTO> branchDTOList;
 }
 

@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SucursalDTO {
+public class BranchDTO {
     private Long id;
     private String name;
 }

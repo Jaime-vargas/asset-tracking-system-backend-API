@@ -8,11 +8,11 @@ import java.util.List;
 
 @Repository
 public interface CameraRepository extends JpaRepository<Camera, Long> {
-    List<Camera> findBySucursalId(Long sucursalId);
+    List<Camera> findByBranchId(Long branchId);
 
-    boolean existsByCameraIdAndSucursalIdAndIdNot(String cameraId, Long sucursalId, Long id);
-    boolean existsByNameAndSucursalIdAndIdNot(String name, Long sucursalId, Long id);
-    boolean existsBySerialNumberAndSucursalIdAndIdNot(String serialNumber, Long sucursalId, Long id);
-    boolean existsByMacAddressAndSucursalIdAndIdNot(String macAddress, Long sucursalId, Long id);
-    boolean existsByIpAddressAndSucursalIdAndIdNot(String ipAddress, Long sucursalId, Long id);
+    boolean existsByCameraIdAndBranchIdAndIdNot(String cameraId, Long branchId, Long id);
+    boolean existsByNameAndBranchIdAndIdNot(String name, Long branchId, Long id);
+    boolean existsBySerialNumberAndBranchIdAndIdNot(String serialNumber, Long branchId, Long id);
+    boolean existsByMacAddressAndBranchIdAndIdNot(String macAddress, Long branchId, Long id);
+    boolean existsByIpAddressAndBranchIdAndIdNot(String ipAddress, Long branchId, Long id);
 }
