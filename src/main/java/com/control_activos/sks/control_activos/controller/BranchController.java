@@ -1,9 +1,12 @@
 package com.control_activos.sks.control_activos.controller;
 
 import com.control_activos.sks.control_activos.models.dto.BranchDTO;
+import com.control_activos.sks.control_activos.models.dto.branchDTO.BranchTableDTO;
 import com.control_activos.sks.control_activos.services.BranchService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/clients")
