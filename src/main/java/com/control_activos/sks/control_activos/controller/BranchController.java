@@ -17,6 +17,12 @@ public class BranchController {
         this.branchService = branchService;
     }
 
+    @GetMapping("/{clientId}/branches")
+    public ResponseEntity<List<BranchTableDTO>> getBranchTableDTO(@PathVariable Long clientId) {
+        List<BranchTableDTO> branchTableDTO = branchService.getBranchTableDTO(clientId);
+        return ResponseEntity.ok().body(branchTableDTO);
+    }
+
     @PostMapping("/{clientId}/branches")
     public ResponseEntity<BranchDTO> saveBranch(@PathVariable Long clientId, @RequestBody BranchDTO branchDTO) {
         branchDTO = branchService.saveBranch(clientId, branchDTO);
