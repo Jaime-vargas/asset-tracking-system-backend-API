@@ -1,4 +1,4 @@
-package com.control_activos.sks.control_activos.mapper.clientMapper;
+package com.control_activos.sks.control_activos.mapper;
 
 import com.control_activos.sks.control_activos.models.dto.clientDTO.ClientDashboardDTO;
 import com.control_activos.sks.control_activos.models.dto.clientDTO.ClientTableDTO;

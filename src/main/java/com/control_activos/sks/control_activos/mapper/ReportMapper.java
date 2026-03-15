@@ -1,4 +1,4 @@
-package com.control_activos.sks.control_activos.mapper.reportMapper;
+package com.control_activos.sks.control_activos.mapper;
 
 import com.control_activos.sks.control_activos.models.dto.reportDTO.ReportTableDTO;
 import com.control_activos.sks.control_activos.models.entity.Report;

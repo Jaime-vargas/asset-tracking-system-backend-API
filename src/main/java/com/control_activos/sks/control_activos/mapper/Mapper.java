@@ -1,7 +1,6 @@
 package com.control_activos.sks.control_activos.mapper;
 
 import com.control_activos.sks.control_activos.enums.ReportPriorityEnum;
-import com.control_activos.sks.control_activos.mapper.reportMapper.ReportMapper;
 import com.control_activos.sks.control_activos.models.dto.*;
 import com.control_activos.sks.control_activos.models.entity.*;
 import org.springframework.stereotype.Service;
