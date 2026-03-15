@@ -4,13 +4,21 @@ import com.control_activos.sks.control_activos.enums.OperationNotAllowedExceptio
 import com.control_activos.sks.control_activos.enums.ResourceNotFoundExceptionEnum;
 import com.control_activos.sks.control_activos.exception.OperationNotAllowedException;
 import com.control_activos.sks.control_activos.exception.ResourceNotFoundException;
+import com.control_activos.sks.control_activos.mapper.BranchMapper;
 import com.control_activos.sks.control_activos.mapper.Mapper;
 import com.control_activos.sks.control_activos.models.dto.BranchDTO;
+import com.control_activos.sks.control_activos.models.dto.ClientDTO;
+import com.control_activos.sks.control_activos.models.dto.branchDTO.BranchTableDTO;
+import com.control_activos.sks.control_activos.models.dto.reportDTO.ReportCountDTO;
 import com.control_activos.sks.control_activos.models.entity.Client;
 import com.control_activos.sks.control_activos.models.entity.Branch;
 import com.control_activos.sks.control_activos.repository.BranchRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class BranchService {
@@ -21,6 +29,21 @@ public class BranchService {
         this.clientService = clientService;
         this.branchRepository = branchRepository;
     }
+
+    public List<BranchTableDTO> getBranchTableDTO(Long clientId) {
+        List<Branch> branches = branchRepository.findAllByClientId(clientId);
+        List<ReportCountDTO> reports = branchRepository.findActiveReportsByClientId(clientId);
+        Map<Long, List<ReportCountDTO>> reportsByBranchId = reports.stream().collect(
+                Collectors.groupingBy(ReportCountDTO::getId));
+
+        return branches.stream().map(branch -> {
+            BranchTableDTO branchTableDto = BranchMapper.toBranchTableDTO(branch);
+            branchTableDto.setReportsActive(reportsByBranchId
+                    .getOrDefault(branch.getId(), List.of()));
+            return branchTableDto;
+        }).toList();
+    }
+
     @Transactional
     public BranchDTO saveBranch(Long clientId, BranchDTO branchDTO) {
         Client client = clientService.findClientById(clientId);
