@@ -86,7 +86,7 @@ public class CameraService {
         }
         if (cameraRepository.existsByNameAndBranchIdAndIdNot(cameraDTO.getName(), branchId, currentCameraId)) {
             throw new DuplicatedResourceException(DuplicateResourceExceptionEnum
-                    .DUPLICATE_CLIENT_NAME.build(cameraDTO.getName()));
+                    .DUPLICATE_CAMERA_NAME.build(cameraDTO.getName()));
         }
         if (cameraRepository.existsBySerialNumberAndBranchIdAndIdNot(cameraDTO.getSerialNumber(), branchId, currentCameraId)) {
             throw new DuplicatedResourceException(DuplicateResourceExceptionEnum
