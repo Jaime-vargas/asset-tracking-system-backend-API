@@ -9,7 +9,7 @@ import java.time.OffsetDateTime;
 @AllArgsConstructor
 public class ReportCountDTO {
 
-    Long clientId;
+    Long id;
     Long reportId;
     OffsetDateTime dueDate;
 }
