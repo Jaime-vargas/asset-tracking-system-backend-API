@@ -2,7 +2,6 @@ package com.control_activos.sks.control_activos.services;
 
 import com.control_activos.sks.control_activos.enums.ResourceNotFoundExceptionEnum;
 import com.control_activos.sks.control_activos.exception.ResourceNotFoundException;
-import com.control_activos.sks.control_activos.mapper.clientMapper.ClientMapper;
 import com.control_activos.sks.control_activos.models.dto.ClientDTO;
 import com.control_activos.sks.control_activos.mapper.Mapper;
 import com.control_activos.sks.control_activos.models.dto.clientDTO.ClientTableDTO;
@@ -13,7 +12,6 @@ import com.control_activos.sks.control_activos.repository.ClientRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -30,7 +28,7 @@ public class ClientService {
     public List<ClientTableDTO> getClientTableDTO() {
         List<ClientTableRowDTO> clientRows = clientRepository.getClientTableRows();
         List<ReportCountDTO> reports = clientRepository.getActiveReports();
-        Map<Long, List<ReportCountDTO>> reportsByClientId = reports.stream().collect(Collectors.groupingBy(ReportCountDTO::getClientId));
+        Map<Long, List<ReportCountDTO>> reportsByClientId = reports.stream().collect(Collectors.groupingBy(ReportCountDTO::getId));
         return clientRows.stream().map(row -> new ClientTableDTO(
                 row.getId(),
                 row.getName(),

@@ -1,7 +1,7 @@
 package com.control_activos.sks.control_activos.services;
 
-import com.control_activos.sks.control_activos.mapper.clientMapper.ClientMapper;
-import com.control_activos.sks.control_activos.mapper.reportMapper.ReportMapper;
+import com.control_activos.sks.control_activos.mapper.ClientMapper;
+import com.control_activos.sks.control_activos.mapper.ReportMapper;
 import com.control_activos.sks.control_activos.models.dto.DashboardDataDTO;
 import com.control_activos.sks.control_activos.models.dto.clientDTO.ClientDashboardDTO;
 import com.control_activos.sks.control_activos.models.dto.reportDTO.ReportTableDTO;
