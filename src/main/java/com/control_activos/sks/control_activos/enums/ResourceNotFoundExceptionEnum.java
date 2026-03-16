@@ -12,7 +12,7 @@ public enum ResourceNotFoundExceptionEnum {
 
     // ENTITIES
     CLIENT_NOT_FOUND("Client not found with id: "),
-    SUCURSAL_NOT_FOUND("Sucursal not found with id: "),
+    BRANCH_NOT_FOUND("Sucursal not found with id: "),
     CAMERA_NOT_FOUND("Camera not found with id: "),
     HARDWARE_NOT_FOUND("Hardware not found with id: "),
     REPORT_NOT_FOUND("Report not found with id: "),
