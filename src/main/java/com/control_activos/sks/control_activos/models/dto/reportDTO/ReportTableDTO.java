@@ -2,6 +2,8 @@ package com.control_activos.sks.control_activos.models.dto.reportDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @AllArgsConstructor
