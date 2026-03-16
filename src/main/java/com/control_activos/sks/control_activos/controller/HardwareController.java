@@ -1,15 +1,18 @@
 package com.control_activos.sks.control_activos.controller;
 
+import com.control_activos.sks.control_activos.models.dto.hardwareDTO.HardwareTableDTO;
 import com.control_activos.sks.control_activos.models.entity.Hardware;
 import com.control_activos.sks.control_activos.services.HardwareService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/hardware")
+@RequestMapping("/api/v1/clients/{clientId}/branches/{branchId}")
 public class HardwareController {
 
     private final HardwareService hardwareService;
@@ -19,7 +22,8 @@ public class HardwareController {
     }
 
     @GetMapping
-    public List<Hardware> getHardwareList() {
-        return hardwareService.getHardwareList();
+    public ResponseEntity<List<HardwareTableDTO>> getHardwareList(@PathVariable Long clientId, @PathVariable Long branchId) {
+        List<HardwareTableDTO> hardwareList = hardwareService.getHardwareByBranch(clientId, branchId);
+        return ResponseEntity.ok().body(hardwareList);
     }
 }
