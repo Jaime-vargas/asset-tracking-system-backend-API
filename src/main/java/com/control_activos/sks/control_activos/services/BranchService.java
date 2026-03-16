@@ -56,7 +56,7 @@ public class BranchService {
 
     @Transactional
     public BranchDTO editBranch(Long clientId, Long sucursalId, BranchDTO branchDTO) {
-        Branch branch = findSucursalById(sucursalId);
+        Branch branch = findBranchById(sucursalId);
         if (!branch.getClient().getId().equals(clientId)) {
             throw new OperationNotAllowedException(
                     OperationNotAllowedExceptionEnum.SUCURSAL_NOT_BELONG_TO_CLIENT.getMessage());
@@ -66,10 +66,10 @@ public class BranchService {
         return Mapper.entityToDTO(branch);
     }
 
-    public Branch findSucursalById(Long sucursalId) {
+    public Branch findBranchById(Long sucursalId) {
         return branchRepository.findById(sucursalId)
                 .orElseThrow(() -> new ResourceNotFoundException(
-                        ResourceNotFoundExceptionEnum.SUCURSAL_NOT_FOUND.build(sucursalId)));
+                        ResourceNotFoundExceptionEnum.BRANCH_NOT_FOUND.build(sucursalId)));
     }
 
 }

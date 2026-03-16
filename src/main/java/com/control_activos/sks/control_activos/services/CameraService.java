@@ -36,7 +36,7 @@ public class CameraService {
     @Transactional
     public CameraDTO saveCamera(Long branchId, CameraDTO cameraDTO) {
         formatDataValidation(cameraDTO);
-        Branch branch = branchService.findSucursalById(branchId);
+        Branch branch = branchService.findBranchById(branchId);
         validateDuplicateData(branch.getId(), cameraDTO, null);
         Camera camera = new Camera();
         setDataToEntity(branch, camera, cameraDTO);
@@ -48,7 +48,7 @@ public class CameraService {
     public CameraDTO editCamera(Long branchId, Long cameraId, CameraDTO cameraDTO) {
         formatDataValidation(cameraDTO);
         Camera camera = findCameraById(cameraId);
-        Branch branch = branchService.findSucursalById(branchId);
+        Branch branch = branchService.findBranchById(branchId);
         if (!camera.getBranch().getId().equals(branchId)) {
             throw new OperationNotAllowedException(OperationNotAllowedExceptionEnum.CAMERA_NOT_BELONG_TO_SUCURSAL.getMessage());
         }
