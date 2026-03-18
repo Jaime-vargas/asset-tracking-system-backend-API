@@ -14,6 +14,7 @@ public class HardwareMapper {
             hardware.getName(),
             hardware.getModel(),
             hardware.getSerialNumber(),
+            hardware.getLocation(),
             Optional.ofNullable(hardware.getLastMaintenanceDate()).map(Object::toString).orElse("N/A")
         );
     }

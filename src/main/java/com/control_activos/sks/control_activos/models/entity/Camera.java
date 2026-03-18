@@ -13,7 +13,6 @@ import lombok.Setter;
 
 @Entity
 public class Camera extends Hardware {
-
     private String cameraId;
     private String macAddress;
     private String ipAddress;

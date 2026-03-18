@@ -7,7 +7,6 @@ import com.control_activos.sks.control_activos.exception.ResourceNotFoundExcepti
 import com.control_activos.sks.control_activos.mapper.BranchMapper;
 import com.control_activos.sks.control_activos.mapper.Mapper;
 import com.control_activos.sks.control_activos.models.dto.BranchDTO;
-import com.control_activos.sks.control_activos.models.dto.ClientDTO;
 import com.control_activos.sks.control_activos.models.dto.branchDTO.BranchTableDTO;
 import com.control_activos.sks.control_activos.models.dto.reportDTO.ReportCountDTO;
 import com.control_activos.sks.control_activos.models.entity.Client;

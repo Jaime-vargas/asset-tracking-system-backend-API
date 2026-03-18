@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/clients/{clientId}/branches/{branchId}")
+@RequestMapping("/api/v1/clients/{clientId}/branches/{branchId}/hardware")
 public class HardwareController {
 
     private final HardwareService hardwareService;
