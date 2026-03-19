@@ -1,6 +1,6 @@
 package com.control_activos.sks.control_activos.controller;
 
-import com.control_activos.sks.control_activos.models.dto.CameraDTO;
+import com.control_activos.sks.control_activos.models.dto.hardwareDTO.CameraDetailDTO;
 import com.control_activos.sks.control_activos.services.CameraService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,22 +16,23 @@ public class CameraController {
         this.cameraService = cameraService;
     }
 
+    /*
     @GetMapping("/{branchId}/cameras")
-    public ResponseEntity<List<CameraDTO>> getCameraDTOList (@PathVariable Long branchId){
-        List<CameraDTO> cameraDTOList = cameraService.getCameraDTOList(branchId);
-        return ResponseEntity.ok().body(cameraDTOList);
+    public ResponseEntity<List<CameraDetailDTO>> getCameraDTOList (@PathVariable Long branchId){
+        List<CameraDetailDTO> cameraDetailDTOList = cameraService.getCameraDTOList(branchId);
+        return ResponseEntity.ok().body(cameraDetailDTOList);
     }
 
     @PostMapping("/{branchId}/cameras")
-    public ResponseEntity<CameraDTO> saveCamera(@PathVariable Long branchId, @RequestBody CameraDTO cameraDTO) {
-        CameraDTO savedCameraDTO = cameraService.saveCamera(branchId, cameraDTO);
-        return ResponseEntity.ok().body(savedCameraDTO);
+    public ResponseEntity<CameraDetailDTO> saveCamera(@PathVariable Long branchId, @RequestBody CameraDetailDTO cameraDetailDTO) {
+        CameraDetailDTO savedCameraDetailDTO = cameraService.saveCamera(branchId, cameraDetailDTO);
+        return ResponseEntity.ok().body(savedCameraDetailDTO);
     }
 
     @PutMapping("/{branchId}/cameras/{cameraId}")
-    public ResponseEntity<CameraDTO> editCamera(@PathVariable Long branchId, @PathVariable Long cameraId, @RequestBody CameraDTO cameraDTO) {
-        CameraDTO updatedCameraDTO = cameraService.editCamera(branchId, cameraId, cameraDTO);
-        return ResponseEntity.ok().body(updatedCameraDTO);
+    public ResponseEntity<CameraDetailDTO> editCamera(@PathVariable Long branchId, @PathVariable Long cameraId, @RequestBody CameraDetailDTO cameraDetailDTO) {
+        CameraDetailDTO updatedCameraDetailDTO = cameraService.editCamera(branchId, cameraId, cameraDetailDTO);
+        return ResponseEntity.ok().body(updatedCameraDetailDTO);
     }
-
+ */
 }

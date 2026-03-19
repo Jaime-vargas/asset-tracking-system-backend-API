@@ -7,7 +7,7 @@ import com.control_activos.sks.control_activos.exception.DuplicatedResourceExcep
 import com.control_activos.sks.control_activos.exception.OperationNotAllowedException;
 import com.control_activos.sks.control_activos.exception.ResourceNotFoundException;
 import com.control_activos.sks.control_activos.mapper.Mapper;
-import com.control_activos.sks.control_activos.models.dto.CameraDTO;
+import com.control_activos.sks.control_activos.models.dto.hardwareDTO.CameraDetailDTO;
 import com.control_activos.sks.control_activos.models.entity.Camera;
 import com.control_activos.sks.control_activos.models.entity.Branch;
 import com.control_activos.sks.control_activos.repository.CameraRepository;
@@ -28,45 +28,47 @@ public class CameraService {
         this.branchService = branchService;
     }
 
-    public List<CameraDTO> getCameraDTOList (Long sucursalId){
+    /*
+    public List<CameraDetailDTO> getCameraDTOList (Long sucursalId){
         List<Camera> cameraList = cameraRepository.findByBranchId(sucursalId);
         return cameraList.stream().map(Mapper::entityToDTO).toList();
 
     }
+
     @Transactional
-    public CameraDTO saveCamera(Long branchId, CameraDTO cameraDTO) {
-        formatDataValidation(cameraDTO);
+    public CameraDetailDTO saveCamera(Long branchId, CameraDetailDTO cameraDetailDTO) {
+        formatDataValidation(cameraDetailDTO);
         Branch branch = branchService.findBranchById(branchId);
-        validateDuplicateData(branch.getId(), cameraDTO, null);
+        validateDuplicateData(branch.getId(), cameraDetailDTO, null);
         Camera camera = new Camera();
-        setDataToEntity(branch, camera, cameraDTO);
+        setDataToEntity(branch, camera, cameraDetailDTO);
         camera = cameraRepository.save(camera);
         return Mapper.entityToDTO(camera);
     }
 
     @Transactional
-    public CameraDTO editCamera(Long branchId, Long cameraId, CameraDTO cameraDTO) {
-        formatDataValidation(cameraDTO);
+    public CameraDetailDTO editCamera(Long branchId, Long cameraId, CameraDetailDTO cameraDetailDTO) {
+        formatDataValidation(cameraDetailDTO);
         Camera camera = findCameraById(cameraId);
         Branch branch = branchService.findBranchById(branchId);
         if (!camera.getBranch().getId().equals(branchId)) {
             throw new OperationNotAllowedException(OperationNotAllowedExceptionEnum.CAMERA_NOT_BELONG_TO_SUCURSAL.getMessage());
         }
-        validateDuplicateData(branch.getId(), cameraDTO, camera.getId());
-        setDataToEntity(branch, camera, cameraDTO);
+        validateDuplicateData(branch.getId(), cameraDetailDTO, camera.getId());
+        setDataToEntity(branch, camera, cameraDetailDTO);
         camera = cameraRepository.save(camera);
         return Mapper.entityToDTO(camera);
     }
-
-    public void setDataToEntity(Branch branch, Camera camera, CameraDTO cameraDTO) {
-        camera.setName(cameraDTO.getName());
-        camera.setSerialNumber(cameraDTO.getSerialNumber());
-        camera.setModel(cameraDTO.getModel());
-        camera.setLocation(cameraDTO.getLocation());
+    */
+    public void setDataToEntity(Branch branch, Camera camera, CameraDetailDTO cameraDetailDTO) {
+        camera.setName(cameraDetailDTO.getName());
+        camera.setSerialNumber(cameraDetailDTO.getSerialNumber());
+        camera.setModel(cameraDetailDTO.getModel());
+        camera.setLocation(cameraDetailDTO.getLocation());
         camera.setBranch(branch);
-        camera.setCameraId(cameraDTO.getCameraId());
-        camera.setMacAddress(cameraDTO.getMacAddress());
-        camera.setIpAddress(cameraDTO.getIpAddress());
+        camera.setCameraId(cameraDetailDTO.getCameraId());
+        camera.setMacAddress(cameraDetailDTO.getMacAddress());
+        camera.setIpAddress(cameraDetailDTO.getIpAddress());
     }
 
     public Camera findCameraById(Long cameraId) {
@@ -74,31 +76,31 @@ public class CameraService {
                 .orElseThrow(() -> new ResourceNotFoundException(ResourceNotFoundExceptionEnum.CAMERA_NOT_FOUND.getMessage()));
     }
 
-    public void formatDataValidation(CameraDTO cameraDTO) {
-        cameraDTO.setMacAddress(formatDataValidationService.validateMacAddressFormat(cameraDTO.getMacAddress()));
-        cameraDTO.setIpAddress(formatDataValidationService.validateIpAddressFormat(cameraDTO.getIpAddress()));
+    public void formatDataValidation(CameraDetailDTO cameraDetailDTO) {
+        cameraDetailDTO.setMacAddress(formatDataValidationService.validateMacAddressFormat(cameraDetailDTO.getMacAddress()));
+        cameraDetailDTO.setIpAddress(formatDataValidationService.validateIpAddressFormat(cameraDetailDTO.getIpAddress()));
     }
 
-    public void validateDuplicateData(Long branchId, CameraDTO cameraDTO, Long currentCameraId) {
-        if (cameraRepository.existsByCameraIdAndBranchIdAndIdNot(cameraDTO.getCameraId(), branchId, currentCameraId)) {
+    public void validateDuplicateData(Long branchId, CameraDetailDTO cameraDetailDTO, Long currentCameraId) {
+        if (cameraRepository.existsByCameraIdAndBranchIdAndIdNot(cameraDetailDTO.getCameraId(), branchId, currentCameraId)) {
             throw new DuplicatedResourceException(DuplicateResourceExceptionEnum
-                    .DUPLICATE_CAMERA_ID.build(cameraDTO.getCameraId()));
+                    .DUPLICATE_CAMERA_ID.build(cameraDetailDTO.getCameraId()));
         }
-        if (cameraRepository.existsByNameAndBranchIdAndIdNot(cameraDTO.getName(), branchId, currentCameraId)) {
+        if (cameraRepository.existsByNameAndBranchIdAndIdNot(cameraDetailDTO.getName(), branchId, currentCameraId)) {
             throw new DuplicatedResourceException(DuplicateResourceExceptionEnum
-                    .DUPLICATE_CAMERA_NAME.build(cameraDTO.getName()));
+                    .DUPLICATE_CAMERA_NAME.build(cameraDetailDTO.getName()));
         }
-        if (cameraRepository.existsBySerialNumberAndBranchIdAndIdNot(cameraDTO.getSerialNumber(), branchId, currentCameraId)) {
+        if (cameraRepository.existsBySerialNumberAndBranchIdAndIdNot(cameraDetailDTO.getSerialNumber(), branchId, currentCameraId)) {
             throw new DuplicatedResourceException(DuplicateResourceExceptionEnum
-                    .DUPLICATE_CAMERA_SERIAL_NUMBER.build(cameraDTO.getSerialNumber()));
+                    .DUPLICATE_CAMERA_SERIAL_NUMBER.build(cameraDetailDTO.getSerialNumber()));
         }
-        if (cameraRepository.existsByMacAddressAndBranchIdAndIdNot(cameraDTO.getMacAddress(), branchId, currentCameraId)) {
+        if (cameraRepository.existsByMacAddressAndBranchIdAndIdNot(cameraDetailDTO.getMacAddress(), branchId, currentCameraId)) {
             throw new DuplicatedResourceException(DuplicateResourceExceptionEnum
-                    .DUPLICATE_CAMERA_MAC_ADDRESS.build(cameraDTO.getMacAddress()));
+                    .DUPLICATE_CAMERA_MAC_ADDRESS.build(cameraDetailDTO.getMacAddress()));
         }
-        if (cameraRepository.existsByIpAddressAndBranchIdAndIdNot(cameraDTO.getIpAddress(), branchId, currentCameraId)) {
+        if (cameraRepository.existsByIpAddressAndBranchIdAndIdNot(cameraDetailDTO.getIpAddress(), branchId, currentCameraId)) {
             throw new DuplicatedResourceException(DuplicateResourceExceptionEnum
-                    .DUPLICATE_CAMERA_IP_ADDRESS.build(cameraDTO.getIpAddress()));
+                    .DUPLICATE_CAMERA_IP_ADDRESS.build(cameraDetailDTO.getIpAddress()));
         }
     }
 }

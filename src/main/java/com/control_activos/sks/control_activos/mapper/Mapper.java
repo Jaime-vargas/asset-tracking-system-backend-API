@@ -14,24 +14,6 @@ public class Mapper {
 
     // #TODO: Implments Mapper Class for each entity to DTO conversion, and vice versa if needed.
 
-    public static CameraDTO entityToDTO (Camera camera) {
-        return new CameraDTO(
-                camera.getId(),
-                camera.getCameraId(),
-                camera.getName(),
-                camera.getSerialNumber(),
-                camera.getModel(),
-                camera.getLocation(),
-                Optional.ofNullable(camera.getLastMaintenanceDate()).map(OffsetDateTime::toString).orElse("N/A"),
-                camera.getBranch().getName(),
-                camera.getBranch().getClient().getName(),
-                camera.getMacAddress(),
-                camera.getIpAddress(),
-                Optional.ofNullable(camera.getReports()).orElse(List.of()).stream()
-                        .map(ReportMapper::toReportTableDTO).toList()
-        );
-    }
-
     public static ClientDTO entityToDTO (Client client) {
         return new ClientDTO(
                 client.getId(),

@@ -1,5 +1,6 @@
 package com.control_activos.sks.control_activos.controller;
 
+import com.control_activos.sks.control_activos.models.dto.hardwareDTO.HardwareDetailDTO;
 import com.control_activos.sks.control_activos.models.dto.hardwareDTO.HardwareTableDTO;
 import com.control_activos.sks.control_activos.models.entity.Hardware;
 import com.control_activos.sks.control_activos.services.HardwareService;
@@ -25,5 +26,11 @@ public class HardwareController {
     public ResponseEntity<List<HardwareTableDTO>> getHardwareList(@PathVariable Long clientId, @PathVariable Long branchId) {
         List<HardwareTableDTO> hardwareList = hardwareService.getHardwareByBranch(clientId, branchId);
         return ResponseEntity.ok().body(hardwareList);
+    }
+
+    @GetMapping("/{hardwareID}")
+    public ResponseEntity<HardwareDetailDTO> getHardwareDetailById(@PathVariable Long clientId, @PathVariable Long branchId, @PathVariable Long hardwareID) {
+        HardwareDetailDTO hardwareDetailDTO = hardwareService.getHardwareDetailById(clientId, branchId, hardwareID);
+        return ResponseEntity.ok().body(hardwareDetailDTO);
     }
 }

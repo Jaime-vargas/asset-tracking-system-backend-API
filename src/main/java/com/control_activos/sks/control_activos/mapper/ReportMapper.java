@@ -1,5 +1,6 @@
 package com.control_activos.sks.control_activos.mapper;
 
+import com.control_activos.sks.control_activos.models.dto.reportDTO.ReportHistoryDTO;
 import com.control_activos.sks.control_activos.models.dto.reportDTO.ReportTableDTO;
 import com.control_activos.sks.control_activos.models.entity.Report;
 import java.util.Optional;
@@ -12,6 +13,16 @@ public class ReportMapper {
             report.getTitle(),
             Optional.ofNullable(report.getPriority()).map(Object::toString).orElse("N/A"),
             Optional.ofNullable(report.getDueDate()).map(Object::toString).orElse("N/A")
+        );
+    }
+
+    public static ReportHistoryDTO toReportHistoryDTO(Report report) {
+        return new ReportHistoryDTO(
+            report.getId(),
+            Optional.ofNullable(report.getDueDate()).map(Object::toString).orElse("N/A"),
+            Optional.ofNullable(report.getPriority()).map(Object::toString).orElse("N/A"),
+            report.getTitle(),
+            report.getReportedBy().getFullName()
         );
     }
 }

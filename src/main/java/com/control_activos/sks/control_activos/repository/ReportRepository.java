@@ -13,9 +13,10 @@ import java.util.List;
 @Repository
 public interface ReportRepository extends JpaRepository<Report, Long> {
     Long countByActiveTrue();
-
     Long countByActiveTrueAndDueDateBefore(OffsetDateTime dueDate);
-
     List<Report> findTop5ByActiveTrueOrderByCreatedAtDesc();
+
+    // LIST OF REPORTS BY HARDWARE ID
+    List<Report> findTop4ByHardwareIdAndActiveTrueOrderByDueDateDesc(Long hardwareId);
 }
 
