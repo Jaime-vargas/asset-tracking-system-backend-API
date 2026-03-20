@@ -9,20 +9,21 @@ public class ReportMapper {
 
     public static ReportTableDTO toReportTableDTO(Report report) {
         return new ReportTableDTO(
-            report.getId(),
-            report.getTitle(),
-            Optional.ofNullable(report.getPriority()).map(Object::toString).orElse("N/A"),
-            Optional.ofNullable(report.getDueDate()).map(Object::toString).orElse("N/A")
+                report.getId(),
+                report.getTitle(),
+                Optional.ofNullable(report.getPriority()).map(Object::toString).orElse("N/A"),
+                Optional.ofNullable(report.getDueDate()).map(Object::toString).orElse("N/A")
         );
     }
 
     public static ReportHistoryDTO toReportHistoryDTO(Report report) {
         return new ReportHistoryDTO(
-            report.getId(),
-            Optional.ofNullable(report.getDueDate()).map(Object::toString).orElse("N/A"),
-            Optional.ofNullable(report.getPriority()).map(Object::toString).orElse("N/A"),
-            report.getTitle(),
-            report.getReportedBy().getFullName()
+                report.getId(),
+                Optional.ofNullable(report.getDueDate()).map(Object::toString).orElse("N/A"),
+                Optional.ofNullable(report.getPriority()).map(Object::toString).orElse("N/A"),
+                report.getTitle(),
+                report.getReportedBy().getFullName(),
+                report.getActive()
         );
     }
 }
