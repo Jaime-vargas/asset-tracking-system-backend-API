@@ -2,7 +2,6 @@ package com.control_activos.sks.control_activos.controller;
 
 import com.control_activos.sks.control_activos.models.dto.hardwareDTO.HardwareDetailDTO;
 import com.control_activos.sks.control_activos.models.dto.hardwareDTO.HardwareTableDTO;
-import com.control_activos.sks.control_activos.models.entity.Hardware;
 import com.control_activos.sks.control_activos.services.HardwareService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
