@@ -17,6 +17,6 @@ public interface ReportRepository extends JpaRepository<Report, Long> {
     List<Report> findTop5ByActiveTrueOrderByCreatedAtDesc();
 
     // LIST OF REPORTS BY HARDWARE ID
-    List<Report> findTop4ByHardwareIdAndActiveTrueOrderByDueDateDesc(Long hardwareId);
+    List<Report> findTop4ByHardwareIdOrderByActiveDescDueDateDesc(Long hardwareId);
 }
 
