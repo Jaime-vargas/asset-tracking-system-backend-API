@@ -11,4 +11,5 @@ public class ReportHistoryDTO {
     private String priority;
     private String title;
     private String reportedBy;
+    private boolean status;
 }
