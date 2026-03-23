@@ -4,7 +4,6 @@ import com.control_activos.sks.control_activos.enums.ResourceNotFoundExceptionEn
 import com.control_activos.sks.control_activos.exception.ResourceNotFoundException;
 import com.control_activos.sks.control_activos.mapper.HardwareMapper;
 import com.control_activos.sks.control_activos.mapper.ReportMapper;
-import com.control_activos.sks.control_activos.models.dto.hardwareDTO.CameraDetailDTO;
 import com.control_activos.sks.control_activos.models.dto.hardwareDTO.HardwareDetailDTO;
 import com.control_activos.sks.control_activos.models.dto.hardwareDTO.HardwareTableDTO;
 import com.control_activos.sks.control_activos.models.dto.reportDTO.ReportCountDTO;
@@ -34,8 +33,8 @@ public class HardwareService {
         this.reportRepository = reportRepository;
     }
 
-    // HARDWARE DETAILS BY ID
-    public HardwareDetailDTO getHardwareDetailById(Long clientId, Long branchID, Long hardwareID) {
+    // GET HARDWARE BY ID
+    public HardwareDetailDTO getHardwareById(Long clientId, Long branchID, Long hardwareID) {
         clientService.findClientById(clientId);
         branchService.findBranchById(branchID);
         Hardware hardware = findHardwareById(hardwareID);
@@ -46,18 +45,30 @@ public class HardwareService {
         return hardwareDetailDTO;
     }
 
-    // LIST OF HARDWARE BY BRANCH
-    public List<HardwareTableDTO> getHardwareByBranch(Long clientID, Long branchID) {
+    // GET HARDWARE LIST BY BRANCH ID
+    public List<HardwareTableDTO> getHardwareListByBranchId(Long clientID, Long branchID) {
         clientService.findClientById(clientID);
         branchService.findBranchById(branchID);
         List<Hardware> hardwareList = hardwareRepository.findAllByBranchId(branchID);
         List<ReportCountDTO> activeReports = hardwareRepository.findActiveReportsByBranchId(branchID);
+        return mergeHardwareAndReportsToDTO(hardwareList, activeReports);
+    }
+
+    // GET ALL HARDWARE LIST
+    public List<HardwareTableDTO> getAllHardwareList() {
+        List<Hardware> hardwareList = hardwareRepository.findAll();
+        List <ReportCountDTO> activeReports = hardwareRepository.findActiveReports();
+        return mergeHardwareAndReportsToDTO(hardwareList, activeReports);
+    }
+
+
+    private List<HardwareTableDTO> mergeHardwareAndReportsToDTO(List<Hardware> hardwareList, List<ReportCountDTO> activeReports){
         Map<Long, List<ReportCountDTO>> reportsByHardwareId = activeReports.stream().collect(
                 Collectors.groupingBy(ReportCountDTO::getId));
         return hardwareList.stream().map(hardware -> {
-            HardwareTableDTO hardwareTableDTO = HardwareMapper.toHardwareTableDTO(hardware);
-            hardwareTableDTO.setReportsActive(reportsByHardwareId.getOrDefault(hardware.getId(), List.of()));
-            return hardwareTableDTO;
+                    HardwareTableDTO hardwareTableDTO = HardwareMapper.toHardwareTableDTO(hardware);
+                    hardwareTableDTO.setReportsActive(reportsByHardwareId.getOrDefault(hardware.getId(), List.of()));
+                    return hardwareTableDTO;
                 }
         ).toList();
     }

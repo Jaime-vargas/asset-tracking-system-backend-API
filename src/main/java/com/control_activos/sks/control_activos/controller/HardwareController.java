@@ -21,15 +21,21 @@ public class HardwareController {
         this.hardwareService = hardwareService;
     }
 
+    @GetMapping("/test") // #TODO: refactor route for better handling of hardware related endpoints
+    public ResponseEntity<List<HardwareTableDTO>> getAllHardwareList(){
+        List<HardwareTableDTO> hardwareList = hardwareService.getAllHardwareList();
+        return ResponseEntity.ok().body(hardwareList);
+    }
+
     @GetMapping
-    public ResponseEntity<List<HardwareTableDTO>> getHardwareList(@PathVariable Long clientId, @PathVariable Long branchId) {
-        List<HardwareTableDTO> hardwareList = hardwareService.getHardwareByBranch(clientId, branchId);
+    public ResponseEntity<List<HardwareTableDTO>> getHardwareListByBranchId(@PathVariable Long clientId, @PathVariable Long branchId) {
+        List<HardwareTableDTO> hardwareList = hardwareService.getHardwareListByBranchId(clientId, branchId);
         return ResponseEntity.ok().body(hardwareList);
     }
 
     @GetMapping("/{hardwareID}")
-    public ResponseEntity<HardwareDetailDTO> getHardwareDetailById(@PathVariable Long clientId, @PathVariable Long branchId, @PathVariable Long hardwareID) {
-        HardwareDetailDTO hardwareDetailDTO = hardwareService.getHardwareDetailById(clientId, branchId, hardwareID);
+    public ResponseEntity<HardwareDetailDTO> getHardwareById(@PathVariable Long clientId, @PathVariable Long branchId, @PathVariable Long hardwareID) {
+        HardwareDetailDTO hardwareDetailDTO = hardwareService.getHardwareById(clientId, branchId, hardwareID);
         return ResponseEntity.ok().body(hardwareDetailDTO);
     }
 }
