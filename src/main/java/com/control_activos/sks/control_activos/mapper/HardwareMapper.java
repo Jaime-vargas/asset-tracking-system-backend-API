@@ -36,7 +36,9 @@ public class HardwareMapper {
             hardware.getModel(),
             hardware.getSerialNumber(),
             hardware.getLocation(),
-            Optional.ofNullable(hardware.getLastMaintenanceDate()).map(Object::toString).orElse("N/A")
+            Optional.ofNullable(hardware.getLastMaintenanceDate()).map(Object::toString).orElse("N/A"),
+            hardware.getBranch().getClient().getName(),
+            hardware.getBranch().getName()
         );
     }
 }
