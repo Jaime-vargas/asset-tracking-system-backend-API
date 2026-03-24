@@ -12,6 +12,7 @@ import com.control_activos.sks.control_activos.models.dto.reportDTO.ReportCountD
 import com.control_activos.sks.control_activos.models.entity.Client;
 import com.control_activos.sks.control_activos.models.entity.Branch;
 import com.control_activos.sks.control_activos.repository.BranchRepository;
+import com.control_activos.sks.control_activos.repository.ReportRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -24,14 +25,16 @@ public class BranchService {
 
     private final ClientService clientService;
     private final BranchRepository branchRepository;
-    public BranchService(ClientService clientService, BranchRepository branchRepository) {
+    private final ReportRepository reportRepository;
+    public BranchService(ClientService clientService, BranchRepository branchRepository, ReportRepository reportRepository) {
         this.clientService = clientService;
         this.branchRepository = branchRepository;
+        this.reportRepository = reportRepository;
     }
 
     public List<BranchTableDTO> getBranchTableDTO(Long clientId) {
-        List<Branch> branches = branchRepository.findAllByClientId(clientId);
-        List<ReportCountDTO> reports = branchRepository.findActiveReportsByClientId(clientId);
+        List<Branch> branches = branchRepository.findByClientId(clientId);
+        List<ReportCountDTO> reports = reportRepository.findActiveReportsByClientId(clientId);
         Map<Long, List<ReportCountDTO>> reportsByBranchId = reports.stream().collect(
                 Collectors.groupingBy(ReportCountDTO::getId));
 

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/clients")
+@RequestMapping("/api/v1/branches")
 public class BranchController {
 
     private final BranchService branchService;
@@ -17,22 +17,17 @@ public class BranchController {
         this.branchService = branchService;
     }
 
-    @GetMapping("/{clientId}/branches")
-    public ResponseEntity<List<BranchTableDTO>> getBranchTableDTO(@PathVariable Long clientId) {
-        List<BranchTableDTO> branchTableDTO = branchService.getBranchTableDTO(clientId);
-        return ResponseEntity.ok().body(branchTableDTO);
-    }
 
-    @PostMapping("/{clientId}/branches")
-    public ResponseEntity<BranchDTO> saveBranch(@PathVariable Long clientId, @RequestBody BranchDTO branchDTO) {
-        branchDTO = branchService.saveBranch(clientId, branchDTO);
+    // #TODO: check endpoints below this comment
+    @PostMapping
+    public ResponseEntity<BranchDTO> saveBranch(@RequestBody BranchDTO branchDTO) {
+        branchDTO = branchService.saveBranch(branchDTO.getId(), branchDTO); // TODO: Add clientId to BranchDTO and refactor this method to use it instead of hardcoding clientId in service layer
         return ResponseEntity.ok().body(branchDTO);
 }
 
-
-    @PutMapping("/{clientId}/branches/{branchId}")
-    public ResponseEntity<BranchDTO> updateSucursal(@PathVariable Long clientId, @PathVariable Long branchId, @RequestBody BranchDTO branchDTO) {
-        branchDTO = branchService.editBranch(clientId, branchId, branchDTO);
+    @PutMapping("/{branchId}")
+    public ResponseEntity<BranchDTO> updateSucursal(@PathVariable Long branchId, @RequestBody BranchDTO branchDTO) {
+        branchDTO = branchService.editBranch(branchId, branchId, branchDTO); // TODO: Add clientId to BranchDTO and refactor this method to use it instead of hardcoding clientId in service layer
         return ResponseEntity.ok().body(branchDTO);
     }
 }
