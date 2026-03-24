@@ -22,7 +22,7 @@ public interface HardwareRepository extends JpaRepository<Hardware, Long> {
         FROM Hardware h
         JOIN h.reports r
         WHERE h.branch.id = :branchId
-        AND r.active = true
+        AND r.status = true
       """)
     List<ReportCountDTO> findActiveReportsByBranchId(Long branchId);
 
@@ -34,7 +34,7 @@ public interface HardwareRepository extends JpaRepository<Hardware, Long> {
       )
         FROM Hardware h
         JOIN h.reports r
-        WHERE r.active = true
+        WHERE r.status = true
       """)
     List<ReportCountDTO> findActiveReports();
     List<Hardware> findAllByBranchId(Long branchId);

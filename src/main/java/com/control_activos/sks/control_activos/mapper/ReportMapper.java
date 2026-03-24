@@ -23,7 +23,7 @@ public class ReportMapper {
                 Optional.ofNullable(report.getPriority()).map(Object::toString).orElse("N/A"),
                 report.getTitle(),
                 report.getReportedBy().getFullName(),
-                report.getActive()
+                report.getStatus()
         );
     }
 }

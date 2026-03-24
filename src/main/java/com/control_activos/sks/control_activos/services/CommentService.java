@@ -35,7 +35,7 @@ public class CommentService {
     @Transactional
     public CommentDTO saveComment(Long reportId, CommentDTO commentDTO) {
         Report report = reportService.findReportById(reportId);
-        checkIfValid(report.getActive());
+        checkIfValid(report.getStatus());
         report.setUpdatedAt(OffsetDateTime.now());
         Comment comment = new Comment();
         comment.setText(formatDataValidationService.lowerCase(commentDTO.getText()));
@@ -53,7 +53,7 @@ public class CommentService {
         if(!comment.getReport().getId().equals(report.getId())) {
             throw new OperationNotAllowedException(OperationNotAllowedExceptionEnum.COMMENT_NOT_BELONG_TO_REPORT.getMessage());
         }
-        checkIfValid(report.getActive());
+        checkIfValid(report.getStatus());
         checkIfSameUser(comment);
         comment.setText(formatDataValidationService.lowerCase(commentDTO.getText()));
         comment = commentRepository.save(comment);

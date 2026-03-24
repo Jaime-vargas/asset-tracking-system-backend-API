@@ -38,7 +38,7 @@ public class HardwareService {
         clientService.findClientById(clientId);
         branchService.findBranchById(branchID);
         Hardware hardware = findHardwareById(hardwareID);
-        List<Report> recentActiveReports = reportRepository.findTop4ByHardwareIdOrderByActiveDescDueDateDesc(hardwareID);
+        List<Report> recentActiveReports = reportRepository.findTop4ByHardwareIdOrderByStatusDescDueDateDesc(hardwareID);
         HardwareDetailDTO hardwareDetailDTO = new HardwareMapper().hardwareDetailDTO(hardware);
         List<ReportHistoryDTO> reportHistoryDTO = recentActiveReports.stream().map(ReportMapper::toReportHistoryDTO).toList();
         hardwareDetailDTO.setRecentActiveReports(reportHistoryDTO);

@@ -46,7 +46,7 @@ public class Mapper {
                 report.getTitle(),
                 Optional.ofNullable(report.getPhotos()).orElse(List.of()).stream().map(Mapper::entityToDTO).toList(),
                 Optional.ofNullable(report.getComments()).orElse(List.of()).stream().map(Mapper::entityToDTO).toList(),
-                report.getActive(),
+                report.getStatus(),
                 report.getHardware().getName(),
                 report.getReportedBy().getFullName(),
                 report.getCreatedAt().toString(),

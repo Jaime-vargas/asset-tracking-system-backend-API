@@ -29,7 +29,7 @@ public class Report {
     @OneToMany(mappedBy = "report", cascade = CascadeType.ALL)
     private List<Comment> comments;
     @Column(nullable = false)
-    private Boolean active;
+    private Boolean status;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "hardware_id", nullable = false)
     private Hardware hardware;

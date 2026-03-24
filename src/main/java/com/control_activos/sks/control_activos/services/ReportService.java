@@ -41,7 +41,7 @@ public class ReportService {
 
         Report report = new Report();
         report.setTitle(reportDTO.getTitle());
-        report.setActive(true);
+        report.setStatus(true);
         report.setHardware(hardware);
         hardware.setLastMaintenanceDate(OffsetDateTime.now());
         report.setCreatedAt(OffsetDateTime.now()); // updated dado of camera
@@ -59,7 +59,7 @@ public class ReportService {
             throw new OperationNotAllowedException(
                     OperationNotAllowedExceptionEnum.REPORT_NOT_BELONG_TO_HARDWARE.getMessage());
         }
-        report.setActive(false);
+        report.setStatus(false);
         report.setClosedAt(OffsetDateTime.now());
         reportRepository.save(report);
     }
