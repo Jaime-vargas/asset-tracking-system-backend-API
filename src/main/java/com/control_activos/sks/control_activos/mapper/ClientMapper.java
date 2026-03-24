@@ -13,23 +13,4 @@ public class ClientMapper {
             client.getName()
         );
     }
-
-    public static ClientTableDTO toClientTableDTO(Client client) {
-        Long branches = (long) client.getBranches().size();
-        Long totalHardware = client.getBranches().stream()
-                .mapToLong(branch -> branch.getHardware()
-                        .size()).sum();
-
-        return new ClientTableDTO(
-                client.getId(),
-                client.getName(),
-                branches,
-                totalHardware,
-                client.getBranches().stream().flatMap(branch -> branch.getHardware().stream())
-                        .flatMap(hardware -> hardware.getReports().stream())
-                        .filter(report -> Boolean.TRUE.equals(report.getActive()))
-                        .map(report -> new ReportCountDTO(client.getId(), report.getId(), report.getDueDate()))
-                        .toList()
-        );
-    }
 }
