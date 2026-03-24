@@ -10,18 +10,5 @@ import java.util.List;
 
 @Repository
 public interface BranchRepository extends JpaRepository<Branch,Long> {
-    List<Branch>findAllByClientId(Long clientId);
-    @Query("""
-        SELECT new com.control_activos.sks.control_activos.models.dto.reportDTO.ReportCountDTO(
-            b.id,
-            r.id,
-            r.dueDate
-        )
-        FROM Branch b
-        JOIN b.hardware h
-        JOIN h.reports r
-        WHERE b.client.id = :clientId
-        AND r.active = true
-        """)
-    List<ReportCountDTO> findActiveReportsByClientId(Long clientId);
+    List<Branch>findByClientId(Long clientId);
 }

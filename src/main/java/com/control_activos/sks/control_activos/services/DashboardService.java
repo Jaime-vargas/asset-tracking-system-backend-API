@@ -29,11 +29,12 @@ public class DashboardService {
     }
 
     public DashboardDataDTO getDashboardData() {
-        Long openReports = reportRepository.countByActiveTrue();
-        Long overdueReports = reportRepository.countByActiveTrueAndDueDateBefore(OffsetDateTime.now());
+        OffsetDateTime now = OffsetDateTime.now();
+        Long openReports = reportRepository.countByStatusTrue();
+        Long overdueReports = reportRepository.countByStatusTrueAndDueDateBefore(now);
         Long totalHardware = hardwareRepository.count();
         Long totalClients = clientRepository.count();
-        List<ReportTableDTO> recentReports = reportRepository.findTop5ByActiveTrueOrderByCreatedAtDesc().stream()
+        List<ReportTableDTO> recentReports = reportRepository.findTop5ByStatusTrueOrderByCreatedAtDesc().stream()
                 .map(ReportMapper::toReportTableDTO)
                 .toList();
         List<ClientDashboardDTO> recentClients = clientRepository.findTop4ByOrderByNameAscIdAsc().stream()
@@ -54,5 +55,4 @@ public class DashboardService {
                 otherHardware
         );
     }
-
 }
