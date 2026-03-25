@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/clients/{clientId}/branches/{branchId}/hardware")
+@RequestMapping("/api/v1/hardware")
 public class HardwareController {
 
     private final HardwareService hardwareService;
@@ -21,21 +21,15 @@ public class HardwareController {
         this.hardwareService = hardwareService;
     }
 
-    @GetMapping("/test") // #TODO: refactor route for better handling of hardware related endpoints
+    @GetMapping() // #TODO: refactor route for better handling of hardware related endpoints
     public ResponseEntity<List<HardwareTableDTO>> getAllHardwareList(){
         List<HardwareTableDTO> hardwareList = hardwareService.getAllHardwareList();
         return ResponseEntity.ok().body(hardwareList);
     }
 
-    @GetMapping
-    public ResponseEntity<List<HardwareTableDTO>> getHardwareListByBranchId(@PathVariable Long clientId, @PathVariable Long branchId) {
-        List<HardwareTableDTO> hardwareList = hardwareService.getHardwareListByBranchId(clientId, branchId);
-        return ResponseEntity.ok().body(hardwareList);
-    }
-
     @GetMapping("/{hardwareID}")
-    public ResponseEntity<HardwareDetailDTO> getHardwareById(@PathVariable Long clientId, @PathVariable Long branchId, @PathVariable Long hardwareID) {
-        HardwareDetailDTO hardwareDetailDTO = hardwareService.getHardwareById(clientId, branchId, hardwareID);
+    public ResponseEntity<HardwareDetailDTO> getHardwareById(@PathVariable Long hardwareID) {
+        HardwareDetailDTO hardwareDetailDTO = hardwareService.getHardwareById(hardwareID);
         return ResponseEntity.ok().body(hardwareDetailDTO);
     }
 }

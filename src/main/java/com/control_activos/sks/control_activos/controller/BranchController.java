@@ -2,6 +2,7 @@ package com.control_activos.sks.control_activos.controller;
 
 import com.control_activos.sks.control_activos.models.dto.BranchDTO;
 import com.control_activos.sks.control_activos.models.dto.branchDTO.BranchTableDTO;
+import com.control_activos.sks.control_activos.models.dto.hardwareDTO.HardwareTableDTO;
 import com.control_activos.sks.control_activos.services.BranchService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,12 @@ public class BranchController {
         this.branchService = branchService;
     }
 
+
+    @GetMapping("{branchId}/hardware")
+    public ResponseEntity<List<HardwareTableDTO>> getHardwareByBranchId(@PathVariable Long branchId){
+        List<HardwareTableDTO> hardwareTableDTO = branchService.getHardwareByBranchId(branchId);
+        return ResponseEntity.ok().body(hardwareTableDTO);
+    }
 
     // #TODO: check endpoints below this comment
     @PostMapping

@@ -16,7 +16,6 @@ import com.control_activos.sks.control_activos.repository.ClientRepository;
 import com.control_activos.sks.control_activos.repository.ReportRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.Map;
@@ -39,7 +38,7 @@ public class ClientService {
     public List<ClientTableDTO> getAllClientTableDTO() {
         List<ClientTableRowDTO> clientRows = clientRepository.getClientTableRows();
         List<ReportCountDTO> allActiveReports = reportRepository.getAllActiveReports();
-        return joinClientRowsAndActiveReports(clientRows, allActiveReports);
+        return MergeClientRowsAndActiveReportsToDTO(clientRows, allActiveReports);
     }
 
     // GET ALL BRANCHES OF A CLIENT WITH ACTIVE REPORTS COUNT
@@ -47,7 +46,7 @@ public class ClientService {
         findClientById(clientId); // Validate client existence
         List<Branch> branchesById = branchRepository.findByClientId(clientId);
         List<ReportCountDTO> activeReportsById = reportRepository.findActiveReportsByClientId(clientId);
-        return joinBranchesAndActiveReports(branchesById, activeReportsById);
+        return MergeBranchesAndActiveReportsToDTO(branchesById, activeReportsById);
     }
 
     // HELPER METHODS
@@ -55,7 +54,7 @@ public class ClientService {
         return activeReports.stream().collect(Collectors.groupingBy(ReportCountDTO::getId));
     }
 
-    private List<BranchTableDTO> joinBranchesAndActiveReports(List<Branch> branches, List<ReportCountDTO> activeReports) {
+    private List<BranchTableDTO> MergeBranchesAndActiveReportsToDTO(List<Branch> branches, List<ReportCountDTO> activeReports) {
         Map<Long, List<ReportCountDTO>> reportsByBranchId = groupReportsById(activeReports);
         return branches.stream().map(branch -> {
             BranchTableDTO branchTableDto = BranchMapper.toBranchTableDTO(branch);
@@ -64,7 +63,7 @@ public class ClientService {
         }).toList();
     }
 
-    private List<ClientTableDTO> joinClientRowsAndActiveReports(List<ClientTableRowDTO> clientRows, List<ReportCountDTO> allActiveReports) {
+    private List<ClientTableDTO> MergeClientRowsAndActiveReportsToDTO(List<ClientTableRowDTO> clientRows, List<ReportCountDTO> allActiveReports) {
         Map<Long, List<ReportCountDTO>> reportsByClientId = groupReportsById(allActiveReports);
         return clientRows.stream().map(row -> new ClientTableDTO(
                 row.getId(),

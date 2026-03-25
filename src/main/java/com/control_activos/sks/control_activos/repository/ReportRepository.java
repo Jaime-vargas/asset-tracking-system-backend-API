@@ -31,7 +31,7 @@ public interface ReportRepository extends JpaRepository<Report, Long> {
 """)
     List<ReportCountDTO> getAllActiveReports();
 
-    // LIST OF ACTIVE REPORTS BY CLIENT ID
+    // LIST OF ACTIVE REPORTS ON BRANCHES BY CLIENT ID
     @Query("""
         SELECT new com.control_activos.sks.control_activos.models.dto.reportDTO.ReportCountDTO(
             r.hardware.branch.id,
@@ -43,5 +43,19 @@ public interface ReportRepository extends JpaRepository<Report, Long> {
             AND r.status = true
     """)
     List<ReportCountDTO> findActiveReportsByClientId(Long clientId);
+
+    // LIST OF ACTIVE REPORTS ON HARDWARE BY BRANCH ID
+    @Query("""
+        SELECT new com.control_activos.sks.control_activos.models.dto.reportDTO.ReportCountDTO(
+            r.hardware.id,
+            r.id,
+            r.dueDate
+        )
+        FROM Report r
+        WHERE r.hardware.branch.id = :branchId
+            AND r.status = true
+    """)
+    List<ReportCountDTO> findActiveReportsByBranchId(Long branchId);
+
 }
 

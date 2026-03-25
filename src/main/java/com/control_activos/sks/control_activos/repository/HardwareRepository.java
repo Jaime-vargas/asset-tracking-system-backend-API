@@ -12,31 +12,5 @@ import java.util.List;
 
 @Repository
 public interface HardwareRepository extends JpaRepository<Hardware, Long> {
-    // GET LIST OF ACTIVE REPORTS BY BRANCH ID
-    @Query("""
-      SELECT new com.control_activos.sks.control_activos.models.dto.reportDTO.ReportCountDTO(
-            h.id,
-            r.id,
-            r.dueDate
-      )
-        FROM Hardware h
-        JOIN h.reports r
-        WHERE h.branch.id = :branchId
-        AND r.status = true
-      """)
-    List<ReportCountDTO> findActiveReportsByBranchId(Long branchId);
-
-    @Query("""
-      SELECT new com.control_activos.sks.control_activos.models.dto.reportDTO.ReportCountDTO(
-            h.id,
-            r.id,
-            r.dueDate
-      )
-        FROM Hardware h
-        JOIN h.reports r
-        WHERE r.status = true
-      """)
-    List<ReportCountDTO> findActiveReports();
-    List<Hardware> findAllByBranchId(Long branchId);
-
+    List<Hardware> findHardwareByBranchId(Long branchId);
 }

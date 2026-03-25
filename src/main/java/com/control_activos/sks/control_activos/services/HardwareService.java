@@ -34,34 +34,25 @@ public class HardwareService {
     }
 
     // GET HARDWARE BY ID
-    public HardwareDetailDTO getHardwareById(Long clientId, Long branchID, Long hardwareID) {
-        clientService.findClientById(clientId);
-        branchService.findBranchById(branchID);
+    public HardwareDetailDTO getHardwareById(Long hardwareID) {
         Hardware hardware = findHardwareById(hardwareID);
         List<Report> recentActiveReports = reportRepository.findTop4ByHardwareIdOrderByStatusDescDueDateDesc(hardwareID);
+
         HardwareDetailDTO hardwareDetailDTO = new HardwareMapper().hardwareDetailDTO(hardware);
         List<ReportHistoryDTO> reportHistoryDTO = recentActiveReports.stream().map(ReportMapper::toReportHistoryDTO).toList();
         hardwareDetailDTO.setRecentActiveReports(reportHistoryDTO);
         return hardwareDetailDTO;
     }
 
-    // GET HARDWARE LIST BY BRANCH ID
-    public List<HardwareTableDTO> getHardwareListByBranchId(Long clientID, Long branchID) {
-        clientService.findClientById(clientID);
-        branchService.findBranchById(branchID);
-        List<Hardware> hardwareList = hardwareRepository.findAllByBranchId(branchID);
-        List<ReportCountDTO> activeReports = hardwareRepository.findActiveReportsByBranchId(branchID);
-        return mergeHardwareAndReportsToDTO(hardwareList, activeReports);
-    }
 
-    // GET ALL HARDWARE LIST
+    // GET HARDWARE LIST
     public List<HardwareTableDTO> getAllHardwareList() {
         List<Hardware> hardwareList = hardwareRepository.findAll();
-        List <ReportCountDTO> activeReports = hardwareRepository.findActiveReports();
+        List <ReportCountDTO> activeReports = reportRepository.getAllActiveReports();
         return mergeHardwareAndReportsToDTO(hardwareList, activeReports);
     }
 
-
+    // HELPER METHODS
     private List<HardwareTableDTO> mergeHardwareAndReportsToDTO(List<Hardware> hardwareList, List<ReportCountDTO> activeReports){
         Map<Long, List<ReportCountDTO>> reportsByHardwareId = activeReports.stream().collect(
                 Collectors.groupingBy(ReportCountDTO::getId));
@@ -73,6 +64,7 @@ public class HardwareService {
         ).toList();
     }
 
+    // VALIDATIONS
     public Hardware findHardwareById(Long hardwareId) {
         return hardwareRepository.findById(hardwareId)
                 .orElseThrow(() -> new ResourceNotFoundException(
