@@ -4,7 +4,7 @@ import com.control_activos.sks.control_activos.mapper.ClientMapper;
 import com.control_activos.sks.control_activos.mapper.ReportMapper;
 import com.control_activos.sks.control_activos.models.dto.DashboardDataDTO;
 import com.control_activos.sks.control_activos.models.dto.clientDTO.ClientDashboardDTO;
-import com.control_activos.sks.control_activos.models.dto.reportDTO.ReportTableDTO;
+import com.control_activos.sks.control_activos.models.dto.reportDTO.ReportDashboardDTO;
 import com.control_activos.sks.control_activos.repository.*;
 import org.springframework.stereotype.Service;
 
@@ -34,8 +34,8 @@ public class DashboardService {
         Long overdueReports = reportRepository.countByStatusTrueAndDueDateBefore(now);
         Long totalHardware = hardwareRepository.count();
         Long totalClients = clientRepository.count();
-        List<ReportTableDTO> recentReports = reportRepository.findTop5ByStatusTrueOrderByCreatedAtDesc().stream()
-                .map(ReportMapper::toReportTableDTO)
+        List<ReportDashboardDTO> recentReports = reportRepository.findTop5ByStatusTrueOrderByCreatedAtDesc().stream()
+                .map(ReportMapper::toReportDashboardDTO)
                 .toList();
         List<ClientDashboardDTO> recentClients = clientRepository.findTop4ByOrderByNameAscIdAsc().stream()
                 .map(ClientMapper::toClientDashboardDTO)

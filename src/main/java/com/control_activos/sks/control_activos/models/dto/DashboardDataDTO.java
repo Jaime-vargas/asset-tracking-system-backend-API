@@ -1,7 +1,7 @@
 package com.control_activos.sks.control_activos.models.dto;
 
 import com.control_activos.sks.control_activos.models.dto.clientDTO.ClientDashboardDTO;
-import com.control_activos.sks.control_activos.models.dto.reportDTO.ReportTableDTO;
+import com.control_activos.sks.control_activos.models.dto.reportDTO.ReportDashboardDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -14,7 +14,7 @@ public class DashboardDataDTO {
     Long totalHardware;
     Long totalClients;
 
-    List<ReportTableDTO> recentReports;
+    List<ReportDashboardDTO> recentReports;
     List<ClientDashboardDTO> clients;
 
     Long totalCameras;

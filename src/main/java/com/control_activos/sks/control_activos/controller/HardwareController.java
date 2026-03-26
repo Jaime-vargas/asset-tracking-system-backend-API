@@ -2,6 +2,7 @@ package com.control_activos.sks.control_activos.controller;
 
 import com.control_activos.sks.control_activos.models.dto.hardwareDTO.HardwareDetailDTO;
 import com.control_activos.sks.control_activos.models.dto.hardwareDTO.HardwareTableDTO;
+import com.control_activos.sks.control_activos.models.dto.reportDTO.ReportTableDTO;
 import com.control_activos.sks.control_activos.services.HardwareService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,4 +33,11 @@ public class HardwareController {
         HardwareDetailDTO hardwareDetailDTO = hardwareService.getHardwareById(hardwareID);
         return ResponseEntity.ok().body(hardwareDetailDTO);
     }
+
+    @GetMapping("/{hardwareID}/reports")
+    public ResponseEntity<List<ReportTableDTO>> getReportsByHardwareId(@PathVariable Long hardwareID) {
+        List<ReportTableDTO> reports = hardwareService.getReportsByHardwareId(hardwareID);
+        return ResponseEntity.ok().body(reports);
+    }
+
 }

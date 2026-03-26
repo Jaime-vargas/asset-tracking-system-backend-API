@@ -8,6 +8,7 @@ import com.control_activos.sks.control_activos.models.dto.hardwareDTO.HardwareDe
 import com.control_activos.sks.control_activos.models.dto.hardwareDTO.HardwareTableDTO;
 import com.control_activos.sks.control_activos.models.dto.reportDTO.ReportCountDTO;
 import com.control_activos.sks.control_activos.models.dto.reportDTO.ReportHistoryDTO;
+import com.control_activos.sks.control_activos.models.dto.reportDTO.ReportTableDTO;
 import com.control_activos.sks.control_activos.models.entity.Hardware;
 import com.control_activos.sks.control_activos.models.entity.Report;
 import com.control_activos.sks.control_activos.repository.HardwareRepository;
@@ -33,6 +34,13 @@ public class HardwareService {
         this.reportRepository = reportRepository;
     }
 
+    // GET REPORTS BY HARDWARE ID
+    public List<ReportTableDTO> getReportsByHardwareId(Long hardwareID) {
+        findHardwareById(hardwareID);
+        List<Report> reports = reportRepository.findByHardwareId(hardwareID);
+        return reports.stream().map(ReportMapper::toReportTableDTO).toList();
+    }
+
     // GET HARDWARE BY ID
     public HardwareDetailDTO getHardwareById(Long hardwareID) {
         Hardware hardware = findHardwareById(hardwareID);
@@ -43,7 +51,6 @@ public class HardwareService {
         hardwareDetailDTO.setRecentActiveReports(reportHistoryDTO);
         return hardwareDetailDTO;
     }
-
 
     // GET HARDWARE LIST
     public List<HardwareTableDTO> getAllHardwareList() {

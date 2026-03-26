@@ -15,6 +15,7 @@ public interface ReportRepository extends JpaRepository<Report, Long> {
     Long countByStatusTrue();
     Long countByStatusTrueAndDueDateBefore(OffsetDateTime dueDate);
     List<Report> findTop5ByStatusTrueOrderByCreatedAtDesc();
+    List<Report> findByHardwareId(Long hardwareId);
 
     // LIST OF TOP 4 REPORTS BY HARDWARE ID, ORDERED BY STATUS (ACTIVE FIRST) AND DUE DATE (MOST RECENT FIRST)
     List<Report> findTop4ByHardwareIdOrderByStatusDescDueDateDesc(Long hardwareId);
