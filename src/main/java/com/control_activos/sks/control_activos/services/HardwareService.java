@@ -37,14 +37,14 @@ public class HardwareService {
     // GET REPORTS BY HARDWARE ID
     public List<ReportTableDTO> getReportsByHardwareId(Long hardwareID) {
         findHardwareById(hardwareID);
-        List<Report> reports = reportRepository.findByHardwareId(hardwareID);
+        List<Report> reports = reportRepository.findByHardwareIdOrderByStatusDescDueDateAsc(hardwareID);
         return reports.stream().map(ReportMapper::toReportTableDTO).toList();
     }
 
     // GET HARDWARE BY ID
     public HardwareDetailDTO getHardwareById(Long hardwareID) {
         Hardware hardware = findHardwareById(hardwareID);
-        List<Report> recentActiveReports = reportRepository.findTop4ByHardwareIdOrderByStatusDescDueDateDesc(hardwareID);
+        List<Report> recentActiveReports = reportRepository.findTop4ByHardwareIdOrderByStatusDescDueDateAsc(hardwareID);
 
         HardwareDetailDTO hardwareDetailDTO = new HardwareMapper().hardwareDetailDTO(hardware);
         List<ReportHistoryDTO> reportHistoryDTO = recentActiveReports.stream().map(ReportMapper::toReportHistoryDTO).toList();
