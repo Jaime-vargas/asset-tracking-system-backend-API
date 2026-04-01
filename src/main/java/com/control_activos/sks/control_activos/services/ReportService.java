@@ -6,7 +6,10 @@ import com.control_activos.sks.control_activos.enums.ResourceNotFoundExceptionEn
 import com.control_activos.sks.control_activos.exception.OperationNotAllowedException;
 import com.control_activos.sks.control_activos.exception.ResourceNotFoundException;
 import com.control_activos.sks.control_activos.mapper.Mapper;
+import com.control_activos.sks.control_activos.mapper.ReportMapper;
 import com.control_activos.sks.control_activos.models.dto.ReportDTO;
+import com.control_activos.sks.control_activos.models.dto.reportDTO.ReportDetailDTO;
+import com.control_activos.sks.control_activos.models.dto.reportDTO.ReportTableDTO;
 import com.control_activos.sks.control_activos.models.entity.Hardware;
 import com.control_activos.sks.control_activos.models.entity.Report;
 import com.control_activos.sks.control_activos.models.entity.UserEntity;
@@ -18,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 
 @Service
 public class ReportService {
@@ -29,16 +33,25 @@ public class ReportService {
         this.reportRepository = reportRepository;
     }
 
+    public List<ReportTableDTO> getAllReports(){
+        List<Report> reports = reportRepository.findAllByOrderByStatusDescDueDateAsc();
+        return reports.stream().map(ReportMapper::toReportTableDTO).toList();
+    }
+
+    public ReportDetailDTO getReportDetail(Long reportId) {
+        Report report = findReportById(reportId);
+        return ReportMapper.toReportDetailDTO(report);
+    }
+
     // #TODO set real user in report
+    // #TODO Check all methods under this comment and refactor to use real user instead of hardcoding userId in service layer
     @Autowired
     private UserEntityRepository userEntityRepository;
 
     @Transactional
     public ReportDTO saveReport(Long hardwareId, ReportDTO reportDTO) {
-
         UserEntity userEntity = userEntityRepository.findById(1L).get();
         Hardware hardware = hardwareRepository.findById(hardwareId).get(); // #TODO validate hardware exist with optional
-
         Report report = new Report();
         report.setTitle(reportDTO.getTitle());
         report.setStatus(true);

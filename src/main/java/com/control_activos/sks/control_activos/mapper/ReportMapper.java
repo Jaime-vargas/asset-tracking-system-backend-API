@@ -1,9 +1,12 @@
 package com.control_activos.sks.control_activos.mapper;
 
+import com.control_activos.sks.control_activos.models.dto.reportDTO.ReportDetailDTO;
 import com.control_activos.sks.control_activos.models.dto.reportDTO.ReportHistoryDTO;
 import com.control_activos.sks.control_activos.models.dto.reportDTO.ReportDashboardDTO;
 import com.control_activos.sks.control_activos.models.dto.reportDTO.ReportTableDTO;
 import com.control_activos.sks.control_activos.models.entity.Report;
+
+import java.util.List;
 import java.util.Optional;
 
 public class ReportMapper {
@@ -32,13 +35,34 @@ public class ReportMapper {
         return new ReportTableDTO(
                 report.getId(),
                 report.getTitle(),
+                report.getHardware().getBranch().getClient().getId(),
                 report.getHardware().getBranch().getClient().getName(),
+                report.getHardware().getBranch().getId(),
                 report.getHardware().getBranch().getName(),
+                report.getHardware().getId(),
                 report.getHardware().getName(),
                 Optional.ofNullable(report.getPriority()).map(Object::toString).orElse("N/A"),
                 report.getCreatedAt(),
                 report.getDueDate(),
                 report.getStatus()
+        );
+    }
+
+    public static ReportDetailDTO toReportDetailDTO(Report report) {
+        return new ReportDetailDTO(
+                report.getId(),
+                report.getTitle(),
+                report.getReportDetails(),
+                List.of("url to get photos for report "), // #TODO : Implement photo DTO
+                Optional.ofNullable(report.getComments()).orElse(List.of()).stream().map(Mapper::entityToDTO).toList(),
+                report.getStatus(),
+                report.getHardware().getName(),
+                report.getReportedBy().getFullName(),
+                Optional.ofNullable(report.getCreatedAt()).map(Object::toString).orElse("N/A"),
+                Optional.ofNullable(report.getUpdatedAt()).map(Object::toString).orElse("N/A"),
+                Optional.ofNullable(report.getClosedAt()).map(Object::toString).orElse("N/A"),
+                Optional.ofNullable(report.getDueDate()).map(Object::toString).orElse("N/A"),
+                report.getPriority().toString()
         );
     }
 }

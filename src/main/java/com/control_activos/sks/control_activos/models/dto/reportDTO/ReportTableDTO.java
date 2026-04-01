@@ -10,8 +10,11 @@ import java.time.OffsetDateTime;
 public class ReportTableDTO {
     private Long id;
     private String title;
+    private Long clientId;
     private String clientName;
+    private Long branchId;
     private String branchName;
+    private Long hardwareId;
     private String hardwareName;
     private String priority;
     private OffsetDateTime createdDate;
