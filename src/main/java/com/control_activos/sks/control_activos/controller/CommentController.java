@@ -1,6 +1,6 @@
 package com.control_activos.sks.control_activos.controller;
 
-import com.control_activos.sks.control_activos.models.dto.CommentDTO;
+import com.control_activos.sks.control_activos.models.dto.commentDTO.CommentDTO;
 import com.control_activos.sks.control_activos.services.CommentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

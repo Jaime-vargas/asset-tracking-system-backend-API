@@ -2,6 +2,7 @@ package com.control_activos.sks.control_activos.mapper;
 
 import com.control_activos.sks.control_activos.enums.ReportPriorityEnum;
 import com.control_activos.sks.control_activos.models.dto.*;
+import com.control_activos.sks.control_activos.models.dto.commentDTO.CommentDTO;
 import com.control_activos.sks.control_activos.models.entity.*;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +28,8 @@ public class Mapper {
         return new  CommentDTO(
                 comment.getId(),
                 comment.getText(),
-                comment.getUser().getFullName()
+                comment.getUser().getFullName(),
+                comment.getCreatedAt()
         );
     }
 

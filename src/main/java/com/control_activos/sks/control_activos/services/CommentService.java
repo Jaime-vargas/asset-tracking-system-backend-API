@@ -5,7 +5,7 @@ import com.control_activos.sks.control_activos.enums.ResourceNotFoundExceptionEn
 import com.control_activos.sks.control_activos.exception.OperationNotAllowedException;
 import com.control_activos.sks.control_activos.exception.ResourceNotFoundException;
 import com.control_activos.sks.control_activos.mapper.Mapper;
-import com.control_activos.sks.control_activos.models.dto.CommentDTO;
+import com.control_activos.sks.control_activos.models.dto.commentDTO.CommentDTO;
 import com.control_activos.sks.control_activos.models.entity.Comment;
 import com.control_activos.sks.control_activos.models.entity.Report;
 import com.control_activos.sks.control_activos.models.entity.UserEntity;
@@ -39,6 +39,7 @@ public class CommentService {
         report.setUpdatedAt(OffsetDateTime.now());
         Comment comment = new Comment();
         comment.setText(formatDataValidationService.lowerCase(commentDTO.getText()));
+        comment.setCreatedAt(OffsetDateTime.now());
         UserEntity user = userEntityService.findByUserEntityId(1L);
         comment.setUser(user); // #TODO Implements get real user
         comment.setReport(report);

@@ -1,12 +1,11 @@
 package com.control_activos.sks.control_activos.models.dto;
 
+import com.control_activos.sks.control_activos.models.dto.commentDTO.CommentDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
 import java.util.List;
 
 @Getter
