@@ -1,10 +1,14 @@
 package com.control_activos.sks.control_activos.controller;
 
 import com.control_activos.sks.control_activos.models.dto.ReportDTO;
+import com.control_activos.sks.control_activos.models.dto.commentDTO.CommentDTO;
+import com.control_activos.sks.control_activos.models.dto.commentDTO.CommentRequestDTO;
 import com.control_activos.sks.control_activos.models.dto.reportDTO.ReportDetailDTO;
 import com.control_activos.sks.control_activos.models.dto.reportDTO.ReportTableDTO;
 import com.control_activos.sks.control_activos.models.entity.Report;
+import com.control_activos.sks.control_activos.services.CommentService;
 import com.control_activos.sks.control_activos.services.ReportService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,8 +18,10 @@ import java.util.List;
 @RequestMapping("/api/v1/reports")
 public class ReportController {
 
+    private final CommentService commentService;
     private final ReportService reportService;
-    public ReportController(ReportService reportService) {
+    public ReportController(CommentService commentService, ReportService reportService) {
+        this.commentService = commentService;
         this.reportService = reportService;
     }
 
@@ -29,6 +35,12 @@ public class ReportController {
     public ResponseEntity<ReportDetailDTO> getReportDetail(@PathVariable long reportId) {
         ReportDetailDTO reportDetailDTO = reportService.getReportDetail(reportId);
         return ResponseEntity.ok().body(reportDetailDTO);
+    }
+
+    @PostMapping("/{reportId}/comments")
+    public ResponseEntity<CommentDTO> saveComment(@PathVariable Long reportId, @RequestBody CommentRequestDTO commentRequestDTO) {
+        CommentDTO commentDTO = commentService.saveComment(reportId, commentRequestDTO);
+        return  ResponseEntity.status(HttpStatus.CREATED).body(commentDTO);
     }
 
     // #TODO check endpoints below this comment

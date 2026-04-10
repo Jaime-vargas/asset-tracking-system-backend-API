@@ -6,6 +6,7 @@ import com.control_activos.sks.control_activos.exception.OperationNotAllowedExce
 import com.control_activos.sks.control_activos.exception.ResourceNotFoundException;
 import com.control_activos.sks.control_activos.mapper.Mapper;
 import com.control_activos.sks.control_activos.models.dto.commentDTO.CommentDTO;
+import com.control_activos.sks.control_activos.models.dto.commentDTO.CommentRequestDTO;
 import com.control_activos.sks.control_activos.models.entity.Comment;
 import com.control_activos.sks.control_activos.models.entity.Report;
 import com.control_activos.sks.control_activos.models.entity.UserEntity;
@@ -32,13 +33,14 @@ public class CommentService {
         this.reportService = reportService;
     }
 
+    // HERE BEGINS THE COMMENT SERVICE METHODS VERIFIED WITH ANGULAR FRONTEND.
     @Transactional
-    public CommentDTO saveComment(Long reportId, CommentDTO commentDTO) {
+    public CommentDTO saveComment(Long reportId, CommentRequestDTO commentRequestDTO) {
         Report report = reportService.findReportById(reportId);
-        checkIfValid(report.getStatus());
+        checkIfReportIsActive(report.getStatus());
         report.setUpdatedAt(OffsetDateTime.now());
         Comment comment = new Comment();
-        comment.setText(formatDataValidationService.lowerCase(commentDTO.getText()));
+        comment.setText(formatDataValidationService.lowerCase(commentRequestDTO.getText()));
         comment.setCreatedAt(OffsetDateTime.now());
         UserEntity user = userEntityService.findByUserEntityId(1L);
         comment.setUser(user); // #TODO Implements get real user
@@ -47,6 +49,17 @@ public class CommentService {
         return Mapper.entityToDTO(comment);
     }
 
+    public void checkIfReportIsActive(Boolean active) {
+        if (!active) {
+            throw new OperationNotAllowedException(
+                    OperationNotAllowedExceptionEnum.REPORT_ALREADY_CLOSED.getMessage()
+            );
+        }
+    }
+
+
+    // HERE BEGINS THE COMMENT SERVICE OF METHODS NOT VERIFIED WITH ANGULAR FRONTEND, METHODS BELOW THIS COMMENT ARE NOT VERIFIED WITH ANGULAR FRONTEND.
+
     @Transactional
     public CommentDTO updateComment(Long reportId, Long commentId, CommentDTO commentDTO) {
         Comment comment = findById(commentId);
@@ -54,20 +67,14 @@ public class CommentService {
         if(!comment.getReport().getId().equals(report.getId())) {
             throw new OperationNotAllowedException(OperationNotAllowedExceptionEnum.COMMENT_NOT_BELONG_TO_REPORT.getMessage());
         }
-        checkIfValid(report.getStatus());
+        checkIfReportIsActive(report.getStatus());
         checkIfSameUser(comment);
         comment.setText(formatDataValidationService.lowerCase(commentDTO.getText()));
         comment = commentRepository.save(comment);
         return Mapper.entityToDTO(comment);
     }
 
-    public void checkIfValid(Boolean valid) {
-        if (!valid) {
-            throw new OperationNotAllowedException(
-                    OperationNotAllowedExceptionEnum.REPORT_ALREADY_CLOSED.getMessage()
-            );
-        }
-    }
+
     // #TODO Implemnts validation for current user edit
     public void checkIfSameUser(Comment comment){
         // TODO Implements get real user
@@ -83,5 +90,7 @@ public class CommentService {
                 new ResourceNotFoundException(ResourceNotFoundExceptionEnum
                         .COMMENT_NOT_FOUND.build(commentId)));
     }
+
+
 
 }
