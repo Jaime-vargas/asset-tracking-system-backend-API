@@ -43,6 +43,13 @@ public class ReportService {
         return ReportMapper.toReportDetailDTO(report);
     }
 
+    @Transactional
+    public void closeReport (Long reportId) {
+        Report report = findReportById(reportId);
+        report.setStatus(false);
+        report.setClosedAt(OffsetDateTime.now());
+        reportRepository.save(report);
+    }
 
     // #TODO set real user in report
     // #TODO Check all methods under this comment and refactor to use real user instead of hardcoding userId in service layer
@@ -66,17 +73,7 @@ public class ReportService {
         return Mapper.entityToDTO(report);
     }
 
-    @Transactional
-    public void closeReport (Long hardwareId, Long reportId) {
-        Report report = findReportById(reportId);
-        if(!report.getHardware().getId().equals(hardwareId)) {
-            throw new OperationNotAllowedException(
-                    OperationNotAllowedExceptionEnum.REPORT_NOT_BELONG_TO_HARDWARE.getMessage());
-        }
-        report.setStatus(false);
-        report.setClosedAt(OffsetDateTime.now());
-        reportRepository.save(report);
-    }
+
 
 
     public Report findReportById(Long reportId) {

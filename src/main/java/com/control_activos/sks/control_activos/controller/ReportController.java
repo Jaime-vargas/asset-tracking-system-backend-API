@@ -43,6 +43,12 @@ public class ReportController {
         return  ResponseEntity.status(HttpStatus.CREATED).body(commentDTO);
     }
 
+    @PutMapping("/{reportId}/close")
+    public ResponseEntity<?> closeReport (@PathVariable long reportId) {
+        reportService.closeReport(reportId);
+        return  ResponseEntity.noContent().build();
+    }
+
     // #TODO check endpoints below this comment
     @PostMapping
     public ResponseEntity<ReportDTO> createReport(@PathVariable long hardwareId, @RequestBody ReportDTO reportDTO) {
@@ -50,9 +56,5 @@ public class ReportController {
         return ResponseEntity.ok().body(reportDTO);
     }
 
-    @PutMapping("/{reportId}/close")
-    public ResponseEntity<?> closeReport (@PathVariable long hardwareId, @PathVariable long reportId) {
-        reportService.closeReport(hardwareId, reportId);
-        return  ResponseEntity.noContent().build();
-    }
+
 }
