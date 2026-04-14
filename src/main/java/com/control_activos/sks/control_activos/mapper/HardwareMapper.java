@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public class HardwareMapper {
 
-    public HardwareDetailDTO hardwareDetailDTO(Hardware hardware) {
+    public static HardwareDetailDTO hardwareDetailDTO(Hardware hardware) {
         if(hardware instanceof Camera camera){
             return new CameraDetailDTO(
                     camera.getId(),
