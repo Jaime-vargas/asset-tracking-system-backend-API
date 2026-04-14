@@ -53,7 +53,7 @@ public class ReportMapper {
                 report.getId(),
                 report.getTitle(),
                 report.getReportDetails(),
-                List.of("url to get photos for report "), // #TODO : Implement photo DTO
+                report.getPhotos().stream().map(PhotoMapper::toPhotoDTO).toList(),
                 Optional.ofNullable(report.getComments()).orElse(List.of()).stream().map(Mapper::entityToDTO).toList(),
                 report.getStatus(),
                 report.getHardware().getName(),

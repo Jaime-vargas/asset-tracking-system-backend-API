@@ -1,18 +1,16 @@
 package com.control_activos.sks.control_activos.models.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.OffsetDateTime;
+
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 
 @Entity
 public class Photo {
@@ -24,4 +22,20 @@ public class Photo {
     private String contentType;
     private Long size;
     private String filePath;
+    private String publicPath;
+    private OffsetDateTime uploadedAt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "report_id")
+    private Report report;
+
+    public  Photo(String filename, String contentType, Long size, String filePath,String publicPath, OffsetDateTime uploadedAt, Report report) {
+        this.filename = filename;
+        this.contentType = contentType;
+        this.size = size;
+        this.filePath = filePath;
+        this.publicPath = publicPath;
+        this.uploadedAt = uploadedAt;
+        this.report = report;
+    }
 }

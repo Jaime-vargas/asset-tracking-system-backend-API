@@ -1,14 +1,10 @@
 package com.control_activos.sks.control_activos.models.entity;
 
-
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.time.OffsetDateTime;
 import java.util.List;
 

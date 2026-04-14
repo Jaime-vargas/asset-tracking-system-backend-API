@@ -6,8 +6,12 @@ import com.control_activos.sks.control_activos.enums.ResourceNotFoundExceptionEn
 import com.control_activos.sks.control_activos.exception.DuplicatedResourceException;
 import com.control_activos.sks.control_activos.exception.OperationNotAllowedException;
 import com.control_activos.sks.control_activos.exception.ResourceNotFoundException;
+import com.control_activos.sks.control_activos.mapper.CameraMapper;
+import com.control_activos.sks.control_activos.mapper.HardwareMapper;
 import com.control_activos.sks.control_activos.mapper.Mapper;
 import com.control_activos.sks.control_activos.models.dto.hardwareDTO.CameraDetailDTO;
+import com.control_activos.sks.control_activos.models.dto.hardwareDTO.CameraRequestDTO;
+import com.control_activos.sks.control_activos.models.dto.hardwareDTO.HardwareDetailDTO;
 import com.control_activos.sks.control_activos.models.entity.Camera;
 import com.control_activos.sks.control_activos.models.entity.Branch;
 import com.control_activos.sks.control_activos.repository.CameraRepository;

@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.OffsetDateTime;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -14,5 +16,7 @@ public class PhotoDTO {
     private Long id;
     private String filename;
     private String contentType;
-    private String filePath;
+    private String publicPath;
+    private OffsetDateTime uploadedAt;
+    private Long reportId;
 }

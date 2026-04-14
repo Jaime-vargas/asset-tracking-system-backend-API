@@ -38,7 +38,7 @@ public class Mapper {
         dto.setId(photo.getId());
         dto.setFilename(photo.getFilename());
         dto.setContentType(photo.getContentType());
-        dto.setFilePath(photo.getFilePath());
+        dto.setPublicPath(photo.getPublicPath());
         return dto;
     }
 
