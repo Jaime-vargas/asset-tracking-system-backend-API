@@ -73,9 +73,6 @@ public class ReportService {
         return Mapper.entityToDTO(report);
     }
 
-
-
-
     public Report findReportById(Long reportId) {
         return reportRepository.findById(reportId).orElseThrow(
                 () -> new ResourceNotFoundException(
