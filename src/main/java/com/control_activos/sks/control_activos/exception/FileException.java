@@ -1,7 +1,9 @@
 package com.control_activos.sks.control_activos.exception;
 
-public class FileException extends RuntimeException {
-  public FileException(String message) {
-    super(message);
-  }
+import org.springframework.http.HttpStatus;
+
+public class FileException extends ApiException{
+    public FileException(String message) {
+        super(message, HttpStatus.BAD_GATEWAY);
+    }
 }
