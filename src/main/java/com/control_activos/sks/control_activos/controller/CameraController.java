@@ -1,6 +1,8 @@
 package com.control_activos.sks.control_activos.controller;
 
 import com.control_activos.sks.control_activos.models.dto.hardwareDTO.CameraDetailDTO;
+import com.control_activos.sks.control_activos.models.dto.hardwareDTO.CameraRequestDTO;
+import com.control_activos.sks.control_activos.models.dto.hardwareDTO.HardwareDetailDTO;
 import com.control_activos.sks.control_activos.services.CameraService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +16,12 @@ public class CameraController {
     private final CameraService cameraService;
     public CameraController(CameraService cameraService) {
         this.cameraService = cameraService;
+    }
+
+    @PostMapping("/{branchId}/cameras")
+    public ResponseEntity<List<HardwareDetailDTO>> saveCamera(@PathVariable Long branchId, @RequestBody List<CameraRequestDTO> cameraRequestDTO) {
+        List<HardwareDetailDTO> cameraList = cameraRequestDTO.stream().map(camera -> cameraService.saveCamera(branchId, camera)).toList();
+        return ResponseEntity.ok().body(cameraList);
     }
 
     /*
