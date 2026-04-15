@@ -24,7 +24,7 @@ public class Report {
     @Column(nullable = false)
     private String title;
     @Lob
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String reportDetails;
     @OneToMany(mappedBy = "report", cascade = CascadeType.ALL)
     private List<Photo> photos;
