@@ -21,13 +21,6 @@ import java.util.Objects;
 @Service
 public class FilesService {
 
-    private final Path filePath = Path.of(
-            System.getProperty("user.home"),
-            "IdeaProjects",
-            "asset-tracking-system-frontend",
-            "public","uploads"
-    );
-
     private final PhotoRepository photoRepository;
     private final ReportService reportService;
     public FilesService(PhotoRepository photoRepository, ReportService reportService) {
@@ -39,11 +32,17 @@ public class FilesService {
     public void uploadPhotos(Long reportId, List<MultipartFile> files) {
         List<String>errorsOnFileUpload = new ArrayList<>(List.of());
         Report report = reportService.findReportById(reportId);
-        Path uploadPath = Path.of(this.filePath + "/reports/" + reportId);
+        Path uploadPath = Path.of ("uploads",
+                "Client-" + report.getHardware().getBranch().getClient().getId(),
+                "Branch-" + report.getHardware().getBranch().getId(),
+                "Hardware-" + report.getHardware().getId(),
+                "Reports",  "Report-" + reportId);
+
         createDirectoriesIfNotExist(uploadPath);
         files.forEach(file -> {
+            System.out.println("Processing file: " + file.getOriginalFilename());
             ValidateImageFile(file);
-            Path storePath = uploadPath.resolve(Objects.requireNonNull(file.getOriginalFilename()));
+            Path storePath = uploadPath.resolve(Objects.requireNonNull(file.getOriginalFilename()).trim().replaceAll("[^a-zA-Z0-9-_.]", "_"));
             if(Files.exists(storePath)) {
                 errorsOnFileUpload.add("File with name " + file.getOriginalFilename() + " already exists.");
             }else {
@@ -52,12 +51,11 @@ public class FilesService {
                         file.getOriginalFilename(),
                         file.getContentType(),
                         file.getSize(),
-                        storePath.toString(),
-                        "/uploads/reports/" + reportId + "/" + file.getOriginalFilename(),
+                        storePath.toString().replaceAll("\\\\", "/"),
                         OffsetDateTime.now(),
                         report);
-                report.getPhotos().add(photo);
                 photoRepository.save(photo);
+
             }
         });
         if (!errorsOnFileUpload.isEmpty()) {

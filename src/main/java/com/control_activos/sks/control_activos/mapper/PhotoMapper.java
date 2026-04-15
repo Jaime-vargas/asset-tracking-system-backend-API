@@ -9,7 +9,7 @@ public class PhotoMapper {
                 photo.getId(),
                 photo.getFilename(),
                 photo.getContentType(),
-                photo.getPublicPath(),
+                photo.getFilePath(),
                 photo.getUploadedAt(),
                 photo.getReport().getId()
         );

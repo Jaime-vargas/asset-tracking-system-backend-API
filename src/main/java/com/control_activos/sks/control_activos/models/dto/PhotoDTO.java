@@ -16,7 +16,7 @@ public class PhotoDTO {
     private Long id;
     private String filename;
     private String contentType;
-    private String publicPath;
+    private String filePath;
     private OffsetDateTime uploadedAt;
     private Long reportId;
 }
