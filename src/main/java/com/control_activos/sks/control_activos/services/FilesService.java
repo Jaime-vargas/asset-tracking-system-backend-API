@@ -1,7 +1,9 @@
 package com.control_activos.sks.control_activos.services;
 
 import com.control_activos.sks.control_activos.enums.FileEnum;
+import com.control_activos.sks.control_activos.enums.OperationNotAllowedExceptionEnum;
 import com.control_activos.sks.control_activos.exception.FileException;
+import com.control_activos.sks.control_activos.exception.OperationNotAllowedException;
 import com.control_activos.sks.control_activos.models.entity.Photo;
 import com.control_activos.sks.control_activos.models.entity.Report;
 import com.control_activos.sks.control_activos.repository.PhotoRepository;
@@ -32,6 +34,9 @@ public class FilesService {
     public void uploadPhotos(Long reportId, List<MultipartFile> files) {
         List<String>errorsOnFileUpload = new ArrayList<>(List.of());
         Report report = reportService.findReportById(reportId);
+        if (!report.getStatus().equals(true)){ // TODO Refactor to implements in ReportService
+            throw new OperationNotAllowedException(OperationNotAllowedExceptionEnum.REPORT_ALREADY_CLOSED.getMessage());
+        }
         Path uploadPath = Path.of ("uploads",
                 "Client-" + report.getHardware().getBranch().getClient().getId(),
                 "Branch-" + report.getHardware().getBranch().getId(),

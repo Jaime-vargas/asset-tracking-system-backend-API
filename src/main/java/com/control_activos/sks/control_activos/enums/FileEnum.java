@@ -6,7 +6,6 @@ public enum FileEnum {
     IMAGE_FORMAT_ERROR("InvalidFileFormat, The uploaded file is not a valid image format.");
 
     private final String message;
-
     FileEnum(String message) {
         this.message = message;
     }
