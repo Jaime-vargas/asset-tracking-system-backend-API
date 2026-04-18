@@ -10,4 +10,5 @@ public class ReportDashboardDTO {
     private String title;
     private String priority;
     private String dueDate;
+    private String status;
 }

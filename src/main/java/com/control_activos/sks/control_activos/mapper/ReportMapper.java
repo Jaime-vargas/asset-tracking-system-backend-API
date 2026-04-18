@@ -1,10 +1,12 @@
 package com.control_activos.sks.control_activos.mapper;
 
+import com.control_activos.sks.control_activos.enums.ReortStatusEnum;
 import com.control_activos.sks.control_activos.models.dto.reportDTO.ReportDetailDTO;
 import com.control_activos.sks.control_activos.models.dto.reportDTO.ReportHistoryDTO;
 import com.control_activos.sks.control_activos.models.dto.reportDTO.ReportDashboardDTO;
 import com.control_activos.sks.control_activos.models.dto.reportDTO.ReportTableDTO;
 import com.control_activos.sks.control_activos.models.entity.Report;
+import com.control_activos.sks.control_activos.services.ReportService;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,7 +18,8 @@ public class ReportMapper {
                 report.getId(),
                 report.getTitle(),
                 Optional.ofNullable(report.getPriority()).map(Object::toString).orElse("N/A"),
-                Optional.ofNullable(report.getDueDate()).map(Object::toString).orElse("N/A")
+                Optional.ofNullable(report.getDueDate()).map(Object::toString).orElse("N/A"),
+                ReortStatusEnum.resolve(report.getStatus(), report.getDueDate())
         );
     }
 
@@ -44,7 +47,7 @@ public class ReportMapper {
                 Optional.ofNullable(report.getPriority()).map(Object::toString).orElse("N/A"),
                 report.getCreatedAt(),
                 report.getDueDate(),
-                report.getStatus()
+                ReortStatusEnum.resolve(report.getStatus(), report.getDueDate())
         );
     }
 
@@ -55,7 +58,7 @@ public class ReportMapper {
                 report.getReportDetails(),
                 report.getPhotos().stream().map(PhotoMapper::toPhotoDTO).toList(),
                 Optional.ofNullable(report.getComments()).orElse(List.of()).stream().map(Mapper::entityToDTO).toList(),
-                report.getStatus(),
+                ReortStatusEnum.resolve(report.getStatus(), report.getDueDate()),
                 report.getHardware().getName(),
                 report.getReportedBy().getFullName(),
                 Optional.ofNullable(report.getCreatedAt()).map(Object::toString).orElse("N/A"),

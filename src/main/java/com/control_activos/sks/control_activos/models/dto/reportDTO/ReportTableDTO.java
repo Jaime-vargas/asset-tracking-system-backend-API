@@ -19,5 +19,5 @@ public class ReportTableDTO {
     private String priority;
     private OffsetDateTime createdDate;
     private OffsetDateTime dueDate;
-    private Boolean status;
+    private String status;
 }

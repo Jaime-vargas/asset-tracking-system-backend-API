@@ -41,6 +41,7 @@ public class Report {
     private OffsetDateTime createdAt;
     private OffsetDateTime updatedAt;
     private OffsetDateTime closedAt;
+    @Column(nullable = false)
     private OffsetDateTime dueDate;  // #TODO: Implement due date logic
     @Enumerated(EnumType.STRING)
     private ReportPriorityEnum priority;

@@ -1,6 +1,7 @@
 package com.control_activos.sks.control_activos.services;
 
 import com.control_activos.sks.control_activos.enums.OperationNotAllowedExceptionEnum;
+import com.control_activos.sks.control_activos.enums.ReortStatusEnum;
 import com.control_activos.sks.control_activos.enums.ReportPriorityEnum;
 import com.control_activos.sks.control_activos.enums.ResourceNotFoundExceptionEnum;
 import com.control_activos.sks.control_activos.exception.OperationNotAllowedException;

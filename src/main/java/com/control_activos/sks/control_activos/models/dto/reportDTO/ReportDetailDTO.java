@@ -15,7 +15,7 @@ public class ReportDetailDTO {
     private String reportDetails;
     private List<PhotoDTO> photos;
     private List<CommentDTO> comments;
-    private Boolean status;
+    private String status;
     private String hardwareName;
     private String reportedBy;
     private String createdAt;
