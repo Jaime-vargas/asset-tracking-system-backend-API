@@ -16,8 +16,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -31,12 +29,12 @@ public class FilesService {
     }
 
     @Transactional
-    public void uploadPhotos(Long reportId, List<MultipartFile> files) {
-        List<String>errorsOnFileUpload = new ArrayList<>(List.of());
+    public void uploadPhotos(Long reportId, MultipartFile file) {
         Report report = reportService.findReportById(reportId);
         if (!report.getStatus().equals(true)){ // TODO Refactor to implements in ReportService
             throw new OperationNotAllowedException(OperationNotAllowedExceptionEnum.REPORT_ALREADY_CLOSED.getMessage());
         }
+        validateImageFile(file);
         Path uploadPath = Path.of ("uploads",
                 "Client-" + report.getHardware().getBranch().getClient().getId(),
                 "Branch-" + report.getHardware().getBranch().getId(),
@@ -44,31 +42,27 @@ public class FilesService {
                 "Reports",  "Report-" + reportId);
 
         createDirectoriesIfNotExist(uploadPath);
-        files.forEach(file -> {
-            System.out.println("Processing file: " + file.getOriginalFilename());
-            ValidateImageFile(file);
-            Path storePath = uploadPath.resolve(Objects.requireNonNull(file.getOriginalFilename()).trim().replaceAll("[^a-zA-Z0-9-_.]", "_"));
-            if(Files.exists(storePath)) {
-                errorsOnFileUpload.add("File with name " + file.getOriginalFilename() + " already exists.");
-            }else {
-                saveFileToPath(file, storePath);
-                Photo photo = new Photo(
-                        file.getOriginalFilename(),
-                        file.getContentType(),
-                        file.getSize(),
-                        storePath.toString().replaceAll("\\\\", "/"),
-                        OffsetDateTime.now(),
-                        report);
-                photoRepository.save(photo);
 
-            }
-        });
-        if (!errorsOnFileUpload.isEmpty()) {
-            throw new FileException(String.join(" ", errorsOnFileUpload));
+        System.out.println("Processing file: " + file.getOriginalFilename());
+
+        Path storePath = uploadPath.resolve(Objects.requireNonNull(file.getOriginalFilename()).trim().replaceAll("[^a-zA-Z0-9-_.]", "_"));
+        if(Files.exists(storePath)) {
+            throw new FileException(FileEnum.ALREADY_EXISTS.getMessage(" " + file.getOriginalFilename()));
+        }else {
+            saveFileToPath(file, storePath);
+            Photo photo = new Photo(
+                    file.getOriginalFilename(),
+                    file.getContentType(),
+                    file.getSize(),
+                    storePath.toString().replaceAll("\\\\", "/"),
+                    OffsetDateTime.now(),
+                    report);
+            photoRepository.save(photo);
+
         }
     }
 
-    private void ValidateImageFile(MultipartFile file) {
+    private void validateImageFile(MultipartFile file) {
         if (file.isEmpty() || !Objects.requireNonNull(file.getContentType()).startsWith("image/")) {
             throw new FileException(FileEnum.IMAGE_FORMAT_ERROR.getMessage());
         }

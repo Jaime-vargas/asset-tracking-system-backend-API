@@ -57,8 +57,8 @@ public class ReportController {
 
     // UPLOAD PHOTOS
     @PostMapping("/{reportId}/photos")
-    public ResponseEntity<?> addPhoto(@PathVariable Long reportId, @RequestPart("file") List<MultipartFile> files) {
-        filesService.uploadPhotos(reportId, files);
+    public ResponseEntity<?> addPhoto(@PathVariable Long reportId, @RequestPart("file") MultipartFile file) {
+        filesService.uploadPhotos(reportId, file);
         return ResponseEntity.noContent().build();
     }
 
