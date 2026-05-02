@@ -1,6 +1,7 @@
 package com.control_activos.sks.control_activos.models.dto.hardwareDTO;
 
 
+import com.control_activos.sks.control_activos.models.dto.PhotoDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

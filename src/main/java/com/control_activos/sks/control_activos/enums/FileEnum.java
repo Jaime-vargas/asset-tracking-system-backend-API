@@ -1,7 +1,7 @@
 package com.control_activos.sks.control_activos.enums;
 
 public enum FileEnum {
-    CREATION_ERROR("DirectoryCreationError, Could not create directory for saving attachment files."),
+    DIRECTORY_CREATION_ERROR("Directory Creation Error, Could not create directory for saving attachment files: "),
     SAVE_ERROR("FileSaveError, Could not save the file to the specified path."),
     IMAGE_FORMAT_ERROR("InvalidFileFormat, The uploaded file is not a valid image format."),
     ALREADY_EXISTS("A file with the same name already exists.");
@@ -10,6 +10,7 @@ public enum FileEnum {
     FileEnum(String message) {
         this.message = message;
     }
+
     public String getMessage() {
         return this.message;
     }

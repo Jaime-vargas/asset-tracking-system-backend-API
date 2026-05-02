@@ -1,27 +1,35 @@
 package com.control_activos.sks.control_activos.controller;
 
+import com.control_activos.sks.control_activos.enums.CameraPhotoUploads;
+import com.control_activos.sks.control_activos.enums.FileEnum;
 import com.control_activos.sks.control_activos.models.dto.hardwareDTO.CameraDetailDTO;
 import com.control_activos.sks.control_activos.models.dto.hardwareDTO.CameraRequestDTO;
 import com.control_activos.sks.control_activos.models.dto.hardwareDTO.HardwareDetailDTO;
 import com.control_activos.sks.control_activos.services.CameraService;
+import com.control_activos.sks.control_activos.services.FilesService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/branches")
+@RequestMapping("/api/v1/hardware/{hardwareID}/camera")
 public class CameraController {
 
     private final CameraService cameraService;
-    public CameraController(CameraService cameraService) {
+    private final FilesService filesService;
+    public CameraController(CameraService cameraService, FilesService filesService) {
+        this.filesService = filesService;
         this.cameraService = cameraService;
     }
 
-    @PostMapping("/{branchId}/cameras")
-    public ResponseEntity<List<HardwareDetailDTO>> saveCamera(@PathVariable Long branchId, @RequestBody List<CameraRequestDTO> cameraRequestDTO) {
-        List<HardwareDetailDTO> cameraList = cameraRequestDTO.stream().map(camera -> cameraService.saveCamera(branchId, camera)).toList();
-        return ResponseEntity.ok().body(cameraList);
+    @PostMapping("/photos")
+    public ResponseEntity<?> addPhoto(@PathVariable Long hardwareID, @RequestPart("file") MultipartFile file,
+                                      @RequestParam CameraPhotoUploads photoType,
+                                      @RequestParam(defaultValue = "false") Boolean replaceExisting) {
+        filesService.uploadCameraPhoto(hardwareID, file, photoType, replaceExisting);
+        return ResponseEntity.noContent().build();
     }
 
     /*
