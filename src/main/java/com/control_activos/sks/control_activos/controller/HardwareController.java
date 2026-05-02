@@ -5,10 +5,7 @@ import com.control_activos.sks.control_activos.models.dto.hardwareDTO.HardwareTa
 import com.control_activos.sks.control_activos.models.dto.reportDTO.ReportTableDTO;
 import com.control_activos.sks.control_activos.services.HardwareService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,7 +19,7 @@ public class HardwareController {
         this.hardwareService = hardwareService;
     }
 
-    @GetMapping() // #TODO: refactor route for better handling of hardware related endpoints
+    @GetMapping()
     public ResponseEntity<List<HardwareTableDTO>> getAllHardwareList(){
         List<HardwareTableDTO> hardwareList = hardwareService.getAllHardwareList();
         return ResponseEntity.ok().body(hardwareList);
@@ -39,5 +36,4 @@ public class HardwareController {
         List<ReportTableDTO> reports = hardwareService.getReportsByHardwareId(hardwareID);
         return ResponseEntity.ok().body(reports);
     }
-
 }

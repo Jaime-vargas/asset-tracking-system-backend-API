@@ -46,7 +46,7 @@ public class HardwareService {
         Hardware hardware = findHardwareById(hardwareID);
         List<Report> recentActiveReports = reportRepository.findTop4ByHardwareIdOrderByStatusDescDueDateAsc(hardwareID);
 
-        HardwareDetailDTO hardwareDetailDTO = new HardwareMapper().hardwareDetailDTO(hardware);
+        HardwareDetailDTO hardwareDetailDTO = HardwareMapper.hardwareDetailDTO(hardware);
         List<ReportHistoryDTO> reportHistoryDTO = recentActiveReports.stream().map(ReportMapper::toReportHistoryDTO).toList();
         hardwareDetailDTO.setRecentActiveReports(reportHistoryDTO);
         return hardwareDetailDTO;
