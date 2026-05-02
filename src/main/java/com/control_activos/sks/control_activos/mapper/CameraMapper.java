@@ -4,18 +4,25 @@ import com.control_activos.sks.control_activos.models.dto.hardwareDTO.CameraRequ
 import com.control_activos.sks.control_activos.models.entity.Branch;
 import com.control_activos.sks.control_activos.models.entity.Camera;
 
+import java.time.OffsetDateTime;
+
 public class CameraMapper {
 
     public static Camera toCameraEntity(CameraRequestDTO cameraRequestDTO, Branch branch) {
         Camera camera = new Camera();
         camera.setName(cameraRequestDTO.getName());
+        camera.setBrand(cameraRequestDTO.getBrand());
         camera.setSerialNumber(cameraRequestDTO.getSerialNumber());
         camera.setModel(cameraRequestDTO.getModel());
         camera.setLocation(cameraRequestDTO.getLocation());
+        camera.setLastUpdate(OffsetDateTime.now());
         camera.setBranch(branch);
         camera.setCameraId(cameraRequestDTO.getCameraId());
         camera.setMacAddress(cameraRequestDTO.getMacAddress());
         camera.setIpAddress(cameraRequestDTO.getIpAddress());
+        camera.setIdf(cameraRequestDTO.getIdf());
+        camera.setUsername(cameraRequestDTO.getUsername());
+        camera.setPassword(cameraRequestDTO.getPassword());
         return camera;
     }
 }

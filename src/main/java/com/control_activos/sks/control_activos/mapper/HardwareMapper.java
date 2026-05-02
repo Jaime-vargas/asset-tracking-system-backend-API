@@ -15,14 +15,20 @@ public class HardwareMapper {
             return new CameraDetailDTO(
                     camera.getId(),
                     camera.getClass().getSimpleName(),
+                    camera.getBrand(),
                     camera.getModel(),
                     camera.getSerialNumber(),
                     camera.getLocation(),
                     camera.getName(),
-                    Optional.ofNullable(camera.getLastMaintenanceDate()).map(Object::toString).orElse("N/A"),
+                    Optional.ofNullable(camera.getLastUpdate()).map(Object::toString).orElse("N/A"),
                     camera.getCameraId(),
                     camera.getMacAddress(),
-                    camera.getIpAddress()
+                    camera.getIpAddress(),
+                    camera.getIdf(),
+                    camera.getUsername(),
+                    camera.getPassword(),
+                    camera.getViewFromCameraPhoto() != null ? PhotoMapper.toPhotoDTO(camera.getViewFromCameraPhoto()) : null,
+                    camera.getViewToCameraPhoto() != null ? PhotoMapper.toPhotoDTO(camera.getViewToCameraPhoto()) : null
             );
         }
         else return null; // TODO: Add other hardware types and throw exception if type is not supported
@@ -32,11 +38,12 @@ public class HardwareMapper {
         return new HardwareTableDTO(
             hardware.getId(),
             hardware.getClass().getSimpleName(),
+            hardware.getBrand(),
             hardware.getName(),
             hardware.getModel(),
             hardware.getSerialNumber(),
             hardware.getLocation(),
-            Optional.ofNullable(hardware.getLastMaintenanceDate()).map(Object::toString).orElse("N/A"),
+            Optional.ofNullable(hardware.getLastUpdate()).map(Object::toString).orElse("N/A"),
             hardware.getBranch().getClient().getId(),
             hardware.getBranch().getClient().getName(),
             hardware.getBranch().getId(),

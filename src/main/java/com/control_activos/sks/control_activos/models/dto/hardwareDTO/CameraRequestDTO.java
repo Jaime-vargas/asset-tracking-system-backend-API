@@ -7,10 +7,14 @@ import lombok.Setter;
 @Setter
 public class CameraRequestDTO {
     String name;
+    String brand;
     String serialNumber;
     String model;
     String location;
     String cameraId;
     String macAddress;
     String ipAddress;
+    String idf;
+    String username;
+    String password;
 }

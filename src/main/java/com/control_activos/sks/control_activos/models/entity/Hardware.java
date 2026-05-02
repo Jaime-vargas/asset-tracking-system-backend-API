@@ -22,12 +22,13 @@ public class Hardware {
     @Column(nullable = false)
     private String name;
     @Column(nullable = false)
+    private String brand;
+    @Column(nullable = false)
     private String serialNumber;
     @Column(nullable = false)
     private String model;
-    @Column(nullable = false)
     private String location;
-    private OffsetDateTime lastMaintenanceDate;
+    private OffsetDateTime lastUpdate;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sucursal_id", nullable = false)
     private Branch branch;

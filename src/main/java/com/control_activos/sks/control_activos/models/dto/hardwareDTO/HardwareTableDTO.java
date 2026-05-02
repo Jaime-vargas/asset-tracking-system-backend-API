@@ -12,6 +12,7 @@ import java.util.List;
 public class HardwareTableDTO {
     Long id;
     String type;
+    String brand;
     String name;
     String model;
     String serialNumber;
@@ -23,9 +24,10 @@ public class HardwareTableDTO {
     Long branchId;
     String branchName;
 
-    public HardwareTableDTO(Long id, String type, String name, String model, String serialNumber, String location, String lastMaintenanceDate, Long clientId, String clientName, Long branchId, String branchName) {
+    public HardwareTableDTO(Long id, String type, String brand, String name, String model, String serialNumber, String location, String lastMaintenanceDate, Long clientId, String clientName, Long branchId, String branchName) {
         this.id = id;
         this.type = type;
+        this.brand = brand;
         this.name = name;
         this.model = model;
         this.serialNumber = serialNumber;
