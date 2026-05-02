@@ -26,7 +26,8 @@ public class Report {
     @Lob
     @Column(nullable = false, columnDefinition = "TEXT")
     private String reportDetails;
-    @OneToMany(mappedBy = "report", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "report_id")
     private List<Photo> photos;
     @OneToMany(mappedBy = "report", cascade = CascadeType.ALL)
     private List<Comment> comments;

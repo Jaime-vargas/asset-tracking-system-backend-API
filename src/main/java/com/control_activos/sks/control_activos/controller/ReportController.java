@@ -1,12 +1,10 @@
 package com.control_activos.sks.control_activos.controller;
 
-import com.control_activos.sks.control_activos.models.dto.PhotoDTO;
 import com.control_activos.sks.control_activos.models.dto.ReportDTO;
 import com.control_activos.sks.control_activos.models.dto.commentDTO.CommentDTO;
 import com.control_activos.sks.control_activos.models.dto.commentDTO.CommentRequestDTO;
 import com.control_activos.sks.control_activos.models.dto.reportDTO.ReportDetailDTO;
 import com.control_activos.sks.control_activos.models.dto.reportDTO.ReportTableDTO;
-import com.control_activos.sks.control_activos.models.entity.Report;
 import com.control_activos.sks.control_activos.services.CommentService;
 import com.control_activos.sks.control_activos.services.FilesService;
 import com.control_activos.sks.control_activos.services.ReportService;
@@ -58,7 +56,7 @@ public class ReportController {
     // UPLOAD PHOTOS
     @PostMapping("/{reportId}/photos")
     public ResponseEntity<?> addPhoto(@PathVariable Long reportId, @RequestPart("file") MultipartFile file) {
-        filesService.uploadPhotos(reportId, file);
+        filesService.uploadPhotoToReport(reportId, file);
         return ResponseEntity.noContent().build();
     }
 

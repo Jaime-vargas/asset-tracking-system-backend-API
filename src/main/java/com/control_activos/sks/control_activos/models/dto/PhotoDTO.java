@@ -18,5 +18,4 @@ public class PhotoDTO {
     private String contentType;
     private String filePath;
     private OffsetDateTime uploadedAt;
-    private Long reportId;
 }

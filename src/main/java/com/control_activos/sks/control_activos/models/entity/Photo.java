@@ -24,16 +24,12 @@ public class Photo {
     private String filePath;
     private OffsetDateTime uploadedAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "report_id")
-    private Report report;
-
-    public  Photo(String filename, String contentType, Long size, String filePath, OffsetDateTime uploadedAt, Report report) {
+    public Photo (String filename, String contentType, Long size, String filePath, OffsetDateTime uploadedAt) {
         this.filename = filename;
         this.contentType = contentType;
         this.size = size;
         this.filePath = filePath;
         this.uploadedAt = uploadedAt;
-        this.report = report;
     }
+
 }

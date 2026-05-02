@@ -65,12 +65,11 @@ public class ReportService {
         report.setTitle(reportDTO.getTitle());
         report.setStatus(true);
         report.setHardware(hardware);
-        hardware.setLastMaintenanceDate(OffsetDateTime.now());
         report.setCreatedAt(OffsetDateTime.now()); // updated dado of camera
         report.setReportedBy(userEntity); // #TODO set real user in report
-        report = reportRepository.save(report);
         report.setDueDate(OffsetDateTime.parse(reportDTO.getDueDate())); // #TODO Implement due date logic
         report.setPriority(ReportPriorityEnum.valueOf(reportDTO.getPriority()));
+        report = reportRepository.save(report);
         return Mapper.entityToDTO(report);
     }
 
@@ -78,5 +77,12 @@ public class ReportService {
         return reportRepository.findById(reportId).orElseThrow(
                 () -> new ResourceNotFoundException(
                         ResourceNotFoundExceptionEnum.REPORT_NOT_FOUND.build(reportId)));
+    }
+
+    public void validateReportIsOpen(Report report) {
+        if (!report.getStatus()) {
+            throw new OperationNotAllowedException(
+                    OperationNotAllowedExceptionEnum.REPORT_ALREADY_CLOSED.getMessage());
+        }
     }
 }
