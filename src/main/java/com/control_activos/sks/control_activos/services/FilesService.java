@@ -36,13 +36,29 @@ public class FilesService {
         Camera camera = cameraService.findCameraById(hardwareID);
 
         validateIsImage(file);
+
+        Photo currentPhoto = switch (photoType) {
+            case VIEW_FROM_CAMERA -> camera.getViewFromCameraPhoto();
+            case VIEW_TO_CAMERA -> camera.getViewToCameraPhoto();
+        };
+        if (currentPhoto != null && !replaceExisting) {
+            throw new FileException(
+                    FileEnum.ALREADY_EXISTS.getMessage(" " + file.getOriginalFilename() + " for camera with ID: " + hardwareID)
+            );
+        }
+
         Path path = getPathOfCamera(camera);
         createDirectoriesIfNotExist(path);
-
         Path storePath = getStorePath(path, file.getOriginalFilename());
+
+        if(replaceExisting && currentPhoto != null && !Files.exists(storePath)) {
+            deleteFile(Path.of(currentPhoto.getFilePath()));
+            photoRepository.delete(currentPhoto);
+        }
+
         switch (photoType) {
-            case VIEW_FROM_CAMERA -> camera.setViewFromCameraPhoto(saveFileToPath(file, storePath, replaceExisting));
-            case VIEW_TO_CAMERA -> camera.setViewToCameraPhoto(saveFileToPath(file, storePath, replaceExisting));
+            case VIEW_FROM_CAMERA -> camera.setViewFromCameraPhoto(saveFileToPath(file, storePath));
+            case VIEW_TO_CAMERA -> camera.setViewToCameraPhoto(saveFileToPath(file, storePath));
         }
     }
 
@@ -52,12 +68,13 @@ public class FilesService {
         reportService.validateReportIsOpen(report);
 
         validateIsImage(file);
+
         Path path = getPathOfReport(report);
         createDirectoriesIfNotExist(path);
 
         Path storePath = getStorePath(path, file.getOriginalFilename());
         report.setUpdatedAt(OffsetDateTime.now());
-        report.getPhotos().add(saveFileToPath(file, storePath, false));
+        report.getPhotos().add(saveFileToPath(file, storePath));
     }
 
     private void validateIsImage(MultipartFile file) {
@@ -94,10 +111,9 @@ public class FilesService {
         return path.resolve(fileName);
     }
 
-    // TODO: implament logic to delete old file if replaceExisting is true
-    private Photo saveFileToPath(MultipartFile file, Path storePath, Boolean replaceExisting) {
-        if(Files.exists(storePath) && !replaceExisting) {
-            throw new FileException(FileEnum.ALREADY_EXISTS.getMessage(" " + file.getOriginalFilename()));
+    private Photo saveFileToPath(MultipartFile file, Path storePath) {
+        if(Files.exists(storePath)) {
+            throw new FileException(FileEnum.DUPLICATE_FILE.getMessage(" " + file.getOriginalFilename()));
         }else {
             try {
                 file.transferTo(storePath);
@@ -111,6 +127,14 @@ public class FilesService {
             } catch (IOException e) {
                 throw new FileException(FileEnum.SAVE_ERROR.getMessage());
             }
+        }
+    }
+
+    private void deleteFile(Path filePath) {
+        try {
+            Files.deleteIfExists(filePath);
+        } catch (IOException e) {
+            throw new FileException(FileEnum.SAVE_ERROR.getMessage(" Could not delete the old file at path: " + filePath.toString()));
         }
     }
 }
