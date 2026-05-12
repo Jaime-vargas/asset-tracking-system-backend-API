@@ -55,7 +55,7 @@ public class HardwareService {
     // GET HARDWARE LIST
     public List<HardwareTableDTO> getAllHardwareList() {
         List<Hardware> hardwareList = hardwareRepository.findAll();
-        List <ReportCountDTO> activeReports = reportRepository.getAllActiveReports();
+        List <ReportCountDTO> activeReports = reportRepository.getAllActiveReportsGroupedByHardwareId();
         return mergeHardwareAndReportsToDTO(hardwareList, activeReports);
     }
 

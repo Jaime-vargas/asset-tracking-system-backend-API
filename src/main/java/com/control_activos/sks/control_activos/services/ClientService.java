@@ -37,7 +37,7 @@ public class ClientService {
     // GET ALL CLIENTS WITH ACTIVE REPORTS COUNT
     public List<ClientTableDTO> getAllClientTableDTO() {
         List<ClientTableRowDTO> clientRows = clientRepository.getClientTableRows();
-        List<ReportCountDTO> allActiveReports = reportRepository.getAllActiveReports();
+        List<ReportCountDTO> allActiveReports = reportRepository.getAllActiveReportsGroupedByClientId();
         return MergeClientRowsAndActiveReportsToDTO(clientRows, allActiveReports);
     }
 

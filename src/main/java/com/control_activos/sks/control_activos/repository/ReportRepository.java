@@ -21,7 +21,7 @@ public interface ReportRepository extends JpaRepository<Report, Long> {
     // LIST OF TOP 4 REPORTS BY HARDWARE ID, ORDERED BY STATUS (ACTIVE FIRST) AND DUE DATE (MOST RECENT FIRST)
     List<Report> findTop4ByHardwareIdOrderByStatusDescDueDateAsc(Long hardwareId);
 
-    // LIST OF ALL ACTIVE REPORTS
+    // LIST OF ALL ACTIVE REPORTS GROUPED BY CLIENT ID
     @Query("""
     SELECT new com.control_activos.sks.control_activos.models.dto.reportDTO.ReportCountDTO(
         r.hardware.branch.client.id,
@@ -31,7 +31,19 @@ public interface ReportRepository extends JpaRepository<Report, Long> {
     FROM Report r
     WHERE r.status = true
 """)
-    List<ReportCountDTO> getAllActiveReports();
+    List<ReportCountDTO> getAllActiveReportsGroupedByClientId();
+
+    // LIST OF ALL ACTIVE REPORTS GROUPED BY HARDWARE ID
+    @Query("""
+    SELECT new com.control_activos.sks.control_activos.models.dto.reportDTO.ReportCountDTO(
+        r.hardware.id,
+        r.id,
+        r.dueDate
+    )
+    FROM Report r
+    WHERE r.status = true
+""")
+    List<ReportCountDTO> getAllActiveReportsGroupedByHardwareId();
 
     // LIST OF ACTIVE REPORTS ON BRANCHES BY CLIENT ID
     @Query("""
