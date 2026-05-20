@@ -1,9 +1,11 @@
 package com.control_activos.sks.control_activos.controller;
 
 import com.control_activos.sks.control_activos.models.dto.BranchDTO;
-import com.control_activos.sks.control_activos.models.dto.branchDTO.BranchTableDTO;
+import com.control_activos.sks.control_activos.models.dto.hardwareDTO.CameraRequestDTO;
+import com.control_activos.sks.control_activos.models.dto.hardwareDTO.HardwareDetailDTO;
 import com.control_activos.sks.control_activos.models.dto.hardwareDTO.HardwareTableDTO;
 import com.control_activos.sks.control_activos.services.BranchService;
+import com.control_activos.sks.control_activos.services.CameraService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,16 +16,27 @@ import java.util.List;
 public class BranchController {
 
     private final BranchService branchService;
-    public BranchController(BranchService branchService) {
+    private final CameraService cameraService;
+    public BranchController(BranchService branchService,  CameraService cameraService) {
         this.branchService = branchService;
+        this.cameraService = cameraService;
     }
 
 
-    @GetMapping("{branchId}/hardware")
+    @GetMapping("/{branchId}/hardware")
     public ResponseEntity<List<HardwareTableDTO>> getHardwareByBranchId(@PathVariable Long branchId){
         List<HardwareTableDTO> hardwareTableDTO = branchService.getHardwareByBranchId(branchId);
         return ResponseEntity.ok().body(hardwareTableDTO);
     }
+
+    @PostMapping("/{branchId}/hardware")
+    public ResponseEntity<HardwareDetailDTO>saveCamera(@PathVariable Long branchId, @RequestBody CameraRequestDTO cameraRequestDTO){
+        HardwareDetailDTO hardwareDetailDTO = cameraService.saveCamera(branchId, cameraRequestDTO);
+        return ResponseEntity.ok().body(hardwareDetailDTO);
+    }
+
+
+
 
     // #TODO: check endpoints below this comment
     @PostMapping

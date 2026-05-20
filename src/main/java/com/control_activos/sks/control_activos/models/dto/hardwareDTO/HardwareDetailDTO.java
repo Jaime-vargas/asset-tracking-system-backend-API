@@ -13,21 +13,23 @@ import java.util.List;
 public abstract class HardwareDetailDTO {
     private Long id;
     private String type;
+    private String name;
     private String brand;
     private String model;
     private String serialNumber;
     private String location;
-    private String name;
     private String lastMaintenanceDate;
     private List<ReportHistoryDTO> recentActiveReports;
 
     public HardwareDetailDTO(long id, String type, String brand, String model, String serialNumber, String location, String name, String lastMaintenanceDate) {
         this.id = id;
         this.type = type;
+        this.name = name;
+        this.brand = brand;
         this.model = model;
         this.serialNumber = serialNumber;
         this.location = location;
-        this.name = name;
+
         this.lastMaintenanceDate = lastMaintenanceDate;
     }
 }

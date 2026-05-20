@@ -1,6 +1,7 @@
 package com.control_activos.sks.control_activos.controller;
 
 import com.control_activos.sks.control_activos.enums.CameraPhotoUploads;
+import com.control_activos.sks.control_activos.models.entity.Camera;
 import com.control_activos.sks.control_activos.services.CameraService;
 import com.control_activos.sks.control_activos.services.FilesService;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,9 @@ public class CameraController {
         this.filesService = filesService;
         this.cameraService = cameraService;
     }
+
+
+
 
     @PostMapping("/photos")
     public ResponseEntity<?> addPhoto(@PathVariable Long hardwareID, @RequestPart("file") MultipartFile file,
