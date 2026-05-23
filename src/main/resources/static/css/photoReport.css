@@ -1,0 +1,24 @@
+@page {
+    size: A4;
+    margin: 12mm;
+}
+
+body {
+    width: 186mm;
+    clear: both;
+}
+.row { width: 100%; }
+.col-24 { width: 100%;  box-sizing: border-box; float: left;}
+.col-12 { width: 48%;  box-sizing: border-box; float: left;}
+.col-8 { width: 30%;   box-sizing: border-box; float: left;}
+.col-6  { width: 23%;  box-sizing: border-box; float: left;}
+.col-2  { width: 10%;  box-sizing: border-box; float: left;}
+
+.color{
+    height: 20px;
+    background: aqua;
+}
+.color h1{
+    color: aqua;
+    font-size: 50px;
+}
