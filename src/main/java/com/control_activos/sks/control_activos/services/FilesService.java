@@ -4,6 +4,7 @@ import com.control_activos.sks.control_activos.enums.CameraPhotoUploads;
 import com.control_activos.sks.control_activos.enums.FileEnum;
 import com.control_activos.sks.control_activos.exception.FileException;
 import com.control_activos.sks.control_activos.models.entity.Camera;
+import com.control_activos.sks.control_activos.models.entity.Client;
 import com.control_activos.sks.control_activos.models.entity.Photo;
 import com.control_activos.sks.control_activos.models.entity.Report;
 import com.control_activos.sks.control_activos.repository.PhotoRepository;
@@ -22,12 +23,40 @@ import java.util.Objects;
 public class FilesService {
 
     private final CameraService cameraService;
+    private final ClientService clientService;
     private final PhotoRepository photoRepository;
     private final ReportService reportService;
-    public FilesService(CameraService cameraService, PhotoRepository photoRepository, ReportService reportService) {
+
+
+    public FilesService(CameraService cameraService, ClientService clientService, PhotoRepository photoRepository, ReportService reportService) {
         this.cameraService = cameraService;
+        this.clientService = clientService;
         this.photoRepository = photoRepository;
         this.reportService = reportService;
+    }
+
+    @Transactional
+    public void UploadClientPhoto(Long clientId, MultipartFile file, Boolean replaceExisting) {
+        Client client = clientService.findClientById(clientId);
+        validateIsImage(file);
+
+        Photo currentPhoto = client.getPhoto();
+        if (currentPhoto != null && !replaceExisting) {
+            throw new FileException(
+                    FileEnum.ALREADY_EXISTS.getMessage(" " + file.getOriginalFilename() + " for client with ID: " + client.getId())
+            );
+        }
+
+        Path path = getPathOfClient(clientId);
+        createDirectoriesIfNotExist(path);
+        Path storePath = getStorePath(path, file.getOriginalFilename());
+
+        if(replaceExisting && currentPhoto != null && !Files.exists(storePath)) {
+            deleteFile(Path.of(currentPhoto.getFilePath()));
+            photoRepository.delete(currentPhoto);
+        }
+
+        client.setPhoto(saveFileToPath(file, storePath));
     }
 
     @Transactional
@@ -89,6 +118,10 @@ public class FilesService {
         }catch (IOException e) {
             throw new FileException(FileEnum.DIRECTORY_CREATION_ERROR.getMessage(savePath.toString()));
         }
+    }
+
+    private Path getPathOfClient(Long clientId) {
+        return Path.of ("uploads", "Client-" + clientId);
     }
 
     private Path getPathOfReport(Report report) {
