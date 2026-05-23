@@ -1,11 +1,14 @@
 package com.control_activos.sks.control_activos.controller;
 
 import com.control_activos.sks.control_activos.models.dto.ClientDTO;
+import com.control_activos.sks.control_activos.models.dto.PhotoDTO;
 import com.control_activos.sks.control_activos.models.dto.branchDTO.BranchTableDTO;
 import com.control_activos.sks.control_activos.models.dto.clientDTO.ClientTableDTO;
 import com.control_activos.sks.control_activos.services.ClientService;
+import com.control_activos.sks.control_activos.services.FilesService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -14,9 +17,11 @@ import java.util.List;
 public class ClientController {
 
     private final ClientService clientService;
+    private final FilesService filesService;
 
-    public ClientController(ClientService clientService) {
+    public ClientController(ClientService clientService, FilesService filesService) {
         this.clientService = clientService;
+        this.filesService = filesService;
     }
 
     @GetMapping
@@ -30,6 +35,17 @@ public class ClientController {
         List<BranchTableDTO> branches = clientService.getAllBranchTableDTOByClientId(clientId);
         return ResponseEntity.ok().body(branches);
     }
+
+    @PostMapping("/{clientId}/photo")
+    public ResponseEntity<?> addPhoto(@PathVariable Long clientId,
+                                      @RequestPart("file")MultipartFile file,
+                                      @RequestParam(defaultValue = "false") Boolean replaceExisting) {
+        filesService.UploadClientPhoto(clientId, file, replaceExisting);
+        return ResponseEntity.noContent().build();
+    }
+
+
+
 
     // #TODO: check endpoints below this comment
     @PostMapping
