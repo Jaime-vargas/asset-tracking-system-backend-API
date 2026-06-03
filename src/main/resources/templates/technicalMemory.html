@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org"
+        lang="es"
+>
+<head>
+    <meta charset="UTF-8" />
+    <title>Photo Report</title>
+    <link rel="stylesheet"
+          type="text/css"
+          href="src/main/resources/static/css/photoReport.css" />
+</head>
+<body>
+<div class="page"
+     th:each="camera, stat : ${cameras}"
+     th:style="${!stat.last} ? 'page-break-after: always;' : ''">
+    <div class="row header">
+        <div class="col-4">
+            <img src="src/main/resources/static/assets/logo.png" alt="logo" class="logo" />
+        </div>
+        <div class="col-16 title-header">
+            <h1>MEMORIA FOTOGRÁFICA</h1>
+            <p>Detalle de Cámara</p>
+        </div>
+        <div class="col-4">
+            <img th:if="${branchPhoto != null}"
+                 th:src="${branchPhoto}" class="logo" />
+        </div>
+    </div>
+    <div class="section">
+        <div class="row">
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-4">
+                        <div class="circle-logo">
+                            <img src="src/main/resources/static/assets/calendar.png" class="icon" />
+                        </div>
+                    </div>
+                    <div class="col-16">
+                        <p><strong>FECHA DE IMPRESIÓN:</strong></p>
+                        <p th:text="${actualDate}"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-4">
+                        <div class="circle-logo">
+                            <img src="src/main/resources/static/assets/doc.png" class="icon" />
+                        </div>
+                    </div>
+                    <div class="col-16">
+                        <p><strong>PROYECTO:</strong></p>
+                        <p th:text="${camera.getBranch().getName()}"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="row">
+            <div class="col-24">
+                <h3 class="title">INFORMACIÓN PRINCIPAL</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-8">
+                <div class="bullet-cell">
+                    <p>•</p>
+                </div>
+                <div class="text-cell">
+                    <p>ID CÁMARA</p>
+                    <p><strong th:text="${camera.getCameraId()}"></strong></p>
+                </div>
+            </div>
+            <div class="col-8">
+                <div class="bullet-cell">
+                    <p>•</p>
+                </div>
+                <div class="text-cell">
+                    <p>MARCA</p>
+                    <p><strong th:text="${camera.getBrand()}"></strong></p>
+                </div>
+            </div>
+            <div class="col-8">
+                <div class="bullet-cell">
+                    <p>•</p>
+                </div>
+                <div class="text-cell">
+                    <p>MODELO</p>
+                    <p><strong th:text="${camera.getModel()}"></strong></p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-8">
+                <div class="bullet-cell">
+                    <p>•</p>
+                </div>
+                <div class="text-cell">
+                    <p>NO. SERIE</p>
+                    <p><strong th:text="${camera.getSerialNumber()}"></strong></p>
+                </div>
+            </div>
+            <div class="col-8">
+                <div class="bullet-cell">
+                    <p>•</p>
+                </div>
+                <div class="text-cell">
+                    <p>MAC ADDRESS</p>
+                    <p><strong th:text="${camera.getMacAddress()}"></strong></p>
+                </div>
+            </div>
+            <div class="col-8">
+                <div class="bullet-cell">
+                    <p>•</p>
+                </div>
+                <div class="text-cell">
+                    <p>IP ADDRESS</p>
+                    <p><strong th:text="${camera.getIpAddress()}"></strong></p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-8">
+                <div class="bullet-cell">
+                    <p>•</p>
+                </div>
+                <div class="text-cell">
+                    <p>NOMBRE</p>
+                    <p><strong th:text="${camera.getName()}"></strong></p>
+                </div>
+            </div>
+            <div class="col-8">
+                <div class="bullet-cell">
+                    <p>•</p>
+                </div>
+                <div class="text-cell">
+                    <p>UBICACIÓN</p>
+                    <p><strong th:text="${camera.getLocation()}"></strong></p>
+                </div>
+            </div>
+            <div class="col-8">
+                <div class="bullet-cell">
+                    <p>•</p>
+                </div>
+                <div class="text-cell">
+                    <p>IDF</p>
+                    <p><strong th:text="${camera.getIdf()}"></strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="row">
+            <div class="col-24">
+                <h3 class="title">EVIDENCIA FOTOGRÁFICA</h3>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 image-cell">
+                <p>VISTA HACIA LA CÁMARA</p>
+                <img th:if="${camera.getViewToCameraPhoto() != null}"
+                     class="image"
+                     th:src="${camera.getViewToCameraPhoto().getFilePath()}"/>
+            </div>
+            <div class="separator"></div>
+            <div class="col-12 image-cell">
+                <p>VISTA DESDE LA CÁMARA</p>
+                <img th:if="${camera.getViewFromCameraPhoto() != null}"
+                     class="image"
+                     th:src="${camera.getViewFromCameraPhoto().getFilePath()}"/>
+            </div>
+        </div>
+    </div>
+    <div class="section">
+
+        <div class="row">
+            <div class="col-24">
+                <h3 class="title">CREDENCIALES DE ACCESO</h3>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="bullet-cell">
+                    <p>•</p>
+                </div>
+                <div class="text-cell">
+                    <p>USUARIO</p>
+                    <p><strong th:text="${camera.getUsername()}"></strong></p>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="bullet-cell">
+                    <p>•</p>
+                </div>
+                <div class="text-cell">
+                    <p>CONTRASEÑA</p>
+                    <p><strong th:text="${camera.getPassword()}"></strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="row">
+            <div class="col-12">
+                <span>Sistema: </span>
+                <span th:text="${camera.getBranch().getClient().getName()}"></span>
+                <span> - </span>
+                <span th:text="${camera.getBranch().getName()}"></span>
+            </div>
+            <div class="col-12">
+                <p class="page-number">Página </p>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

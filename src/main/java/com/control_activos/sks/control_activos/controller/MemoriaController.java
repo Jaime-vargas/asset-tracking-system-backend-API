@@ -1,20 +1,20 @@
 package com.control_activos.sks.control_activos.controller;
 
+import com.control_activos.sks.control_activos.models.entity.Branch;
 import com.control_activos.sks.control_activos.models.entity.Camera;
 import com.control_activos.sks.control_activos.repository.BranchRepository;
 import com.control_activos.sks.control_activos.repository.CameraRepository;
 import com.control_activos.sks.control_activos.services.CameraService;
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
-import lombok.Getter;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+
 import org.springframework.web.bind.annotation.RestController;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
@@ -23,9 +23,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -33,6 +34,8 @@ public class MemoriaController {
 
     @Autowired
     CameraRepository cameraRepository;
+    @Autowired
+    BranchRepository branchRepository;
     @Autowired
     CameraService cameraService;
     @Autowired
@@ -42,28 +45,83 @@ public class MemoriaController {
     public ResponseEntity<byte[]> photoReport (@PathVariable Long branchId) {
 
 
-        byte[] pdf = generatePdfTempService(branchId);
+        byte[] pdf = generatePhotoReportPdf(branchId);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
         headers.add(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"report.pdf\"");
         return ResponseEntity.ok().headers(headers).body(pdf);
 
+    };
 
+    @GetMapping("{branchId}/technicalMemory")
+    public ResponseEntity<byte[]> technicalMemory (@PathVariable Long branchId) {
+
+
+        byte[] pdf = generateTechnicalMemoryPdf(branchId);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"report.pdf\"");
+        return ResponseEntity.ok().headers(headers).body(pdf);
 
     };
 
-    public byte[] generatePdfTempService(Long branchId) {
-
+    public byte[] generateTechnicalMemoryPdf(Long branchId) {
         List<Camera> cameras = cameraRepository.findByBranchId(branchId);
 
+        List<Camera> cameras1 = new ArrayList<>(cameras);
+        cameras1.addAll(cameras);
+        cameras1.addAll(cameras);
+        cameras1.addAll(cameras);
+        cameras1.addAll(cameras);
+
+        Branch branch = branchRepository.findById(branchId).get();
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd 'de' MMMM 'de' yyyy",
                 Locale.of("es", "MX"));
-
         String actualDate = now.format(formatter);
 
         Context context = new Context();
+        context.setVariable("branch", branch);
+        context.setVariable("cameras", cameras1);
+        context.setVariable("actualDate", actualDate);
+
+        String html = templateEngine.process("technicalMemory", context);
+
+        try(ByteArrayOutputStream outputStream = new ByteArrayOutputStream()){
+
+            PdfRendererBuilder builder = new PdfRendererBuilder();
+            builder.useFastMode();
+
+            String baseUrl = new File(".")
+                    .toURI()
+                    .toString();
+            builder.withHtmlContent(html, baseUrl);
+
+            builder.toStream(outputStream);
+            builder.run();
+            return outputStream.toByteArray();
+        } catch (Exception e) {
+            throw new RuntimeException("Error generating PDF", e);
+        }
+
+    }
+
+
+    public byte[] generatePhotoReportPdf(Long branchId) {
+
+        List<Camera> cameras = cameraRepository.findByBranchId(branchId);
+
+        Branch branch = branchRepository.findById(branchId).get();
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd 'de' MMMM 'de' yyyy",
+                Locale.of("es", "MX"));
+        String actualDate = now.format(formatter);
+
+
+        Context context = new Context();
+        context.setVariable("branch", branch);
         context.setVariable("cameras", cameras);
         context.setVariable("actualDate", actualDate);
 
