@@ -20,7 +20,8 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
             c.id,
             c.name,
             COUNT(DISTINCT b.id),
-            COUNT(DISTINCT h.id)
+            COUNT(DISTINCT h.id),
+            c.photo
         )
         FROM Client c
         LEFT JOIN c.branches b

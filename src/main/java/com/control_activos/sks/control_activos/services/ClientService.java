@@ -3,8 +3,10 @@ package com.control_activos.sks.control_activos.services;
 import com.control_activos.sks.control_activos.enums.ResourceNotFoundExceptionEnum;
 import com.control_activos.sks.control_activos.exception.ResourceNotFoundException;
 import com.control_activos.sks.control_activos.mapper.BranchMapper;
+import com.control_activos.sks.control_activos.mapper.PhotoMapper;
 import com.control_activos.sks.control_activos.models.dto.ClientDTO;
 import com.control_activos.sks.control_activos.mapper.Mapper;
+import com.control_activos.sks.control_activos.models.dto.PhotoDTO;
 import com.control_activos.sks.control_activos.models.dto.branchDTO.BranchTableDTO;
 import com.control_activos.sks.control_activos.models.dto.clientDTO.ClientTableDTO;
 import com.control_activos.sks.control_activos.models.dto.clientDTO.ClientTableRowDTO;
@@ -70,7 +72,8 @@ public class ClientService {
                 row.getName(),
                 row.getBranches(),
                 row.getTotalHardware(),
-                reportsByClientId.getOrDefault(row.getId(), List.of())
+                reportsByClientId.getOrDefault(row.getId(), List.of()),
+                PhotoMapper.toPhotoDTO(row.getPhoto())
         )).toList();
     }
 

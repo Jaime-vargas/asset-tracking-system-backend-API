@@ -3,7 +3,7 @@ package com.control_activos.sks.control_activos.services;
 import com.control_activos.sks.control_activos.mapper.ClientMapper;
 import com.control_activos.sks.control_activos.mapper.ReportMapper;
 import com.control_activos.sks.control_activos.models.dto.DashboardDataDTO;
-import com.control_activos.sks.control_activos.models.dto.clientDTO.ClientDashboardDTO;
+import com.control_activos.sks.control_activos.models.dto.clientDTO.ClientDTO;
 import com.control_activos.sks.control_activos.models.dto.reportDTO.ReportDashboardDTO;
 import com.control_activos.sks.control_activos.repository.*;
 import org.springframework.stereotype.Service;
@@ -37,8 +37,8 @@ public class DashboardService {
         List<ReportDashboardDTO> recentReports = reportRepository.findTop5ByStatusTrueOrderByCreatedAtDesc().stream()
                 .map(ReportMapper::toReportDashboardDTO)
                 .toList();
-        List<ClientDashboardDTO> recentClients = clientRepository.findTop4ByOrderByNameAscIdAsc().stream()
-                .map(ClientMapper::toClientDashboardDTO)
+        List<ClientDTO> recentClients = clientRepository.findTop4ByOrderByNameAscIdAsc().stream()
+                .map(ClientMapper::toClientDTO)
                 .toList();
         Long totalCameras = cameraRepository.count();
         Long totalSwitches = switchRepository.count();
