@@ -9,28 +9,47 @@
     <title>Photo Report</title>
     <link rel="stylesheet"
           type="text/css"
-          href="src/main/resources/static/css/photoReport.css" />
+          href="src/main/resources/static/css/technicalMemory.css" />
 </head>
 <body>
-<div class="page"
-     th:each="camera, stat : ${cameras}"
-     th:style="${!stat.last} ? 'page-break-after: always;' : ''">
-    <div class="row header">
-        <div class="col-4">
-            <img src="src/main/resources/static/assets/logo.png" alt="logo" class="logo" />
-        </div>
-        <div class="col-16 title-header">
-            <h1>MEMORIA FOTOGRÁFICA</h1>
-            <p>Detalle de Cámara</p>
-        </div>
-        <div class="col-4">
-            <img th:if="${branchPhoto != null}"
-                 th:src="${branchPhoto}" class="logo" />
+<div class="page">
+
+    <!-- HEADER -->
+    <div id="header">
+        <div class="row">
+            <div class="col-4">
+                <img src="src/main/resources/static/assets/logo.png" alt="logo" class="logo" />
+            </div>
+            <div class="col-16 title-header">
+                <h1>MEMORIA TECNICA</h1>
+                <p>Detalle de Cámara</p>
+            </div>
+            <div class="col-4">
+                <img th:if="${branch.getClient().getPhoto().getFilePath() != null}"
+                     th:src="${branch.getClient().getPhoto().getFilePath()}" class="logo" />
+            </div>
         </div>
     </div>
-    <div class="section">
+    <!-- /HEADER -->
+    <!-- FOOTER -->
+    <div id="footer">
         <div class="row">
             <div class="col-12">
+                <span>Sistema: </span>
+                <span th:text="${branch.getClient().getName()}"></span>
+                <span> - </span>
+                <span th:text="${branch.getName()}"></span>
+            </div>
+            <div class="col-12">
+                <p class="page-number">Página </p>
+            </div>
+        </div>
+    </div>
+    <!-- /FOOTER -->
+
+    <div class="section">
+        <div class="row">
+            <div class="col-8">
                 <div class="row">
                     <div class="col-4">
                         <div class="circle-logo">
@@ -43,7 +62,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-12">
+            <div class="col-8">
                 <div class="row">
                     <div class="col-4">
                         <div class="circle-logo">
@@ -52,174 +71,63 @@
                     </div>
                     <div class="col-16">
                         <p><strong>PROYECTO:</strong></p>
-                        <p th:text="${camera.getBranch().getName()}"></p>
+                        <p th:text="${branch.getName()}"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-8">
+                <div class="row">
+                    <div class="col-4">
+                        <div class="circle-logo">
+                            <img src="src/main/resources/static/assets/doc.png" class="icon" />
+                        </div>
+                    </div>
+                    <div class="col-16">
+                        <p><strong>TOTAL DE DISPOSITIVOS:</strong></p>
+                        <p th:text="${cameras.size()}"></p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="section">
-        <div class="row">
-            <div class="col-24">
-                <h3 class="title">INFORMACIÓN PRINCIPAL</h3>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-8">
-                <div class="bullet-cell">
-                    <p>•</p>
-                </div>
-                <div class="text-cell">
-                    <p>ID CÁMARA</p>
-                    <p><strong th:text="${camera.getCameraId()}"></strong></p>
-                </div>
-            </div>
-            <div class="col-8">
-                <div class="bullet-cell">
-                    <p>•</p>
-                </div>
-                <div class="text-cell">
-                    <p>MARCA</p>
-                    <p><strong th:text="${camera.getBrand()}"></strong></p>
-                </div>
-            </div>
-            <div class="col-8">
-                <div class="bullet-cell">
-                    <p>•</p>
-                </div>
-                <div class="text-cell">
-                    <p>MODELO</p>
-                    <p><strong th:text="${camera.getModel()}"></strong></p>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-8">
-                <div class="bullet-cell">
-                    <p>•</p>
-                </div>
-                <div class="text-cell">
-                    <p>NO. SERIE</p>
-                    <p><strong th:text="${camera.getSerialNumber()}"></strong></p>
-                </div>
-            </div>
-            <div class="col-8">
-                <div class="bullet-cell">
-                    <p>•</p>
-                </div>
-                <div class="text-cell">
-                    <p>MAC ADDRESS</p>
-                    <p><strong th:text="${camera.getMacAddress()}"></strong></p>
-                </div>
-            </div>
-            <div class="col-8">
-                <div class="bullet-cell">
-                    <p>•</p>
-                </div>
-                <div class="text-cell">
-                    <p>IP ADDRESS</p>
-                    <p><strong th:text="${camera.getIpAddress()}"></strong></p>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-8">
-                <div class="bullet-cell">
-                    <p>•</p>
-                </div>
-                <div class="text-cell">
-                    <p>NOMBRE</p>
-                    <p><strong th:text="${camera.getName()}"></strong></p>
-                </div>
-            </div>
-            <div class="col-8">
-                <div class="bullet-cell">
-                    <p>•</p>
-                </div>
-                <div class="text-cell">
-                    <p>UBICACIÓN</p>
-                    <p><strong th:text="${camera.getLocation()}"></strong></p>
-                </div>
-            </div>
-            <div class="col-8">
-                <div class="bullet-cell">
-                    <p>•</p>
-                </div>
-                <div class="text-cell">
-                    <p>IDF</p>
-                    <p><strong th:text="${camera.getIdf()}"></strong></p>
-                </div>
-            </div>
+    <div class="row">
+        <div class="col-24">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>CAM ID</th>
+                    <th>NOMBRE</th>
+                    <th>MARCA</th>
+                    <th>MODELO</th>
+                    <th>NO. SERIE</th>
+                    <th>MAC ADDRESS</th>
+                    <th>IP ADDRESS</th>
+                    <th>IDF</th>
+                    <th>UBICACIÓN</th>
+                    <th>USUARIO</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="camera, stat : ${cameras}">
+                    <td th:text="${camera.getCameraId()}"></td>
+                    <td th:text="${camera.getName()}"></td>
+                    <td th:text="${camera.getBrand()}"></td>
+                    <td th:text="${camera.getModel()}"></td>
+                    <td th:text="${camera.getSerialNumber()}"></td>
+                    <td th:text="${camera.getMacAddress()}"></td>
+                    <td th:text="${camera.getIpAddress()}"></td>
+                    <td th:text="${camera.getIdf()}"></td>
+                    <td th:text="${camera.getLocation()}"></td>
+                    <td th:text="${camera.getUsername()}"></td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 
-    <div class="section">
-        <div class="row">
-            <div class="col-24">
-                <h3 class="title">EVIDENCIA FOTOGRÁFICA</h3>
-            </div>
-        </div>
 
-        <div class="row">
-            <div class="col-12 image-cell">
-                <p>VISTA HACIA LA CÁMARA</p>
-                <img th:if="${camera.getViewToCameraPhoto() != null}"
-                     class="image"
-                     th:src="${camera.getViewToCameraPhoto().getFilePath()}"/>
-            </div>
-            <div class="separator"></div>
-            <div class="col-12 image-cell">
-                <p>VISTA DESDE LA CÁMARA</p>
-                <img th:if="${camera.getViewFromCameraPhoto() != null}"
-                     class="image"
-                     th:src="${camera.getViewFromCameraPhoto().getFilePath()}"/>
-            </div>
-        </div>
-    </div>
-    <div class="section">
-
-        <div class="row">
-            <div class="col-24">
-                <h3 class="title">CREDENCIALES DE ACCESO</h3>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-12">
-                <div class="bullet-cell">
-                    <p>•</p>
-                </div>
-                <div class="text-cell">
-                    <p>USUARIO</p>
-                    <p><strong th:text="${camera.getUsername()}"></strong></p>
-                </div>
-            </div>
-            <div class="col-12">
-                <div class="bullet-cell">
-                    <p>•</p>
-                </div>
-                <div class="text-cell">
-                    <p>CONTRASEÑA</p>
-                    <p><strong th:text="${camera.getPassword()}"></strong></p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="footer">
-        <div class="row">
-            <div class="col-12">
-                <span>Sistema: </span>
-                <span th:text="${camera.getBranch().getClient().getName()}"></span>
-                <span> - </span>
-                <span th:text="${camera.getBranch().getName()}"></span>
-            </div>
-            <div class="col-12">
-                <p class="page-number">Página </p>
-            </div>
-        </div>
-    </div>
 </div>
 </body>
 </html>

@@ -1,6 +1,10 @@
 @page {
     size: A4;
     margin: 8mm;
+
+    @bottom-center {
+        content: element(footer);
+    }
 }
 
 body{
@@ -15,6 +19,8 @@ body{
     margin: 0 auto;
     box-sizing: border-box;
     overflow: hidden;
+
+
 }
 
 h1, h2, h3, p {
@@ -148,8 +154,8 @@ h1, h2, h3, p {
     height: 400px;
 }
 
-.footer{
-    position: relative;
+#footer{
+    position: running(footer);
     bottom: 0;
 
     font-size: 11px;

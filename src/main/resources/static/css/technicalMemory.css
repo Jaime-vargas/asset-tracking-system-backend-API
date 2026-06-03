@@ -1,6 +1,12 @@
 @page {
-    size: A4;
-    margin: 8mm;
+    size: A4 landscape;
+    margin: 25mm 8mm 8mm 8mm;
+    @top-center {
+        content: element(header);
+    }
+    @bottom-center {
+        content: element(footer);
+    }
 }
 
 body{
@@ -9,8 +15,8 @@ body{
 }
 
 .page{
-    width: 194mm;
-    min-height: 280mm;
+    width: 280mm;
+    min-height: 192mm;
     background: white;
     margin: 0 auto;
     box-sizing: border-box;
@@ -68,7 +74,8 @@ h1, h2, h3, p {
     width: 10px;
 }
 
-.header{
+#header{
+    position: running(header);
     padding-bottom: 10px;
     border-bottom: #0f2236 3px solid;
 }
@@ -77,6 +84,30 @@ h1, h2, h3, p {
     width: 100px;
     height: auto;
 }
+
+
+table{
+    -fs-table-paginate: paginate;
+    width: 100%;
+    font-size: 9pt;
+    border-collapse: collapse;
+}
+
+tr{
+    page-break-inside: avoid;
+}
+
+th{
+    background: #0f2236;
+    color: white;
+}
+td{
+    border: 1px solid #c0c0c0;
+}
+
+
+
+
 .icon{
     position: relative;
     width: 16px;
@@ -148,8 +179,8 @@ h1, h2, h3, p {
     height: 400px;
 }
 
-.footer{
-    position: relative;
+#footer{
+    position: running(footer);
     bottom: 0;
 
     font-size: 11px;
