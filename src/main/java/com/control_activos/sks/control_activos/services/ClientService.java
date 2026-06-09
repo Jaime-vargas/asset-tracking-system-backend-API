@@ -13,6 +13,7 @@ import com.control_activos.sks.control_activos.models.dto.clientDTO.ClientTableR
 import com.control_activos.sks.control_activos.models.dto.reportDTO.ReportCountDTO;
 import com.control_activos.sks.control_activos.models.entity.Branch;
 import com.control_activos.sks.control_activos.models.entity.Client;
+import com.control_activos.sks.control_activos.models.entity.Photo;
 import com.control_activos.sks.control_activos.repository.BranchRepository;
 import com.control_activos.sks.control_activos.repository.ClientRepository;
 import com.control_activos.sks.control_activos.repository.ReportRepository;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,6 +41,10 @@ public class ClientService {
     // GET ALL CLIENTS WITH ACTIVE REPORTS COUNT
     public List<ClientTableDTO> getAllClientTableDTO() {
         List<ClientTableRowDTO> clientRows = clientRepository.getClientTableRows();
+
+        clientRows.forEach(c -> System.out.println("Client ID: " + c.getId() + ", Name: " + c.getName() + ", Branches: " + c.getBranches() + ", Total Hardware: " + c.getTotalHardware()));
+        // #Testing: Log client rows to verify data retrieval
+        // #Testing: This query is executed only once, which is more efficient than fetching active reports for each client separately.
         List<ReportCountDTO> allActiveReports = reportRepository.getAllActiveReportsGroupedByClientId();
         return MergeClientRowsAndActiveReportsToDTO(clientRows, allActiveReports);
     }
@@ -73,7 +79,7 @@ public class ClientService {
                 row.getBranches(),
                 row.getTotalHardware(),
                 reportsByClientId.getOrDefault(row.getId(), List.of()),
-                PhotoMapper.toPhotoDTO(row.getPhoto())
+                PhotoMapper.toPhotoDTO(Optional.ofNullable(row.getPhoto()).orElse(new Photo()))
         )).toList();
     }
 

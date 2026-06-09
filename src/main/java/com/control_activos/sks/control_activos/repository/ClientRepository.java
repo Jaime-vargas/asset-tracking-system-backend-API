@@ -24,6 +24,7 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
             c.photo
         )
         FROM Client c
+        LEFT JOIN c.photo p
         LEFT JOIN c.branches b
         LEFT JOIN b.hardware h
         GROUP BY c.id, c.name
