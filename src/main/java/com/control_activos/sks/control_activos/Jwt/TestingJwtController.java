@@ -99,15 +99,14 @@ public class TestingJwtController {
     @GetMapping("/qr/pdf/{branchId}")
     public ResponseEntity<byte[]> photoReport (@PathVariable Long branchId) throws IOException {
 
-
         byte[] pdf = generateQrPdf(branchId);
-
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
         headers.add(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"qr.pdf\"");
         return ResponseEntity.ok().headers(headers).body(pdf);
-
     };
+
+
 
     public byte[] generateQrPdf(Long branchId) throws IOException {
 
@@ -141,9 +140,6 @@ public class TestingJwtController {
         context.setVariable("width", qrWidth);
         context.setVariable("qrSize", width - 1);
 
-
-
-
         String html = templateEngine.process("qrFormat", context);
 
         try(ByteArrayOutputStream outputStream = new ByteArrayOutputStream()){
@@ -162,6 +158,5 @@ public class TestingJwtController {
         } catch (Exception e) {
             throw new RuntimeException("Error generating PDF", e);
         }
-
     }
 }
