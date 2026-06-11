@@ -41,10 +41,6 @@ public class ClientService {
     // GET ALL CLIENTS WITH ACTIVE REPORTS COUNT
     public List<ClientTableDTO> getAllClientTableDTO() {
         List<ClientTableRowDTO> clientRows = clientRepository.getClientTableRows();
-
-        clientRows.forEach(c -> System.out.println("Client ID: " + c.getId() + ", Name: " + c.getName() + ", Branches: " + c.getBranches() + ", Total Hardware: " + c.getTotalHardware()));
-        // #Testing: Log client rows to verify data retrieval
-        // #Testing: This query is executed only once, which is more efficient than fetching active reports for each client separately.
         List<ReportCountDTO> allActiveReports = reportRepository.getAllActiveReportsGroupedByClientId();
         return MergeClientRowsAndActiveReportsToDTO(clientRows, allActiveReports);
     }
@@ -55,6 +51,15 @@ public class ClientService {
         List<Branch> branchesById = branchRepository.findByClientId(clientId);
         List<ReportCountDTO> activeReportsById = reportRepository.findActiveReportsByClientId(clientId);
         return MergeBranchesAndActiveReportsToDTO(branchesById, activeReportsById);
+    }
+
+    // EDIT CLIENT
+    @Transactional
+    public ClientDTO editClient(Long clientId, ClientDTO clientDTO) {
+        Client client = findClientById(clientId);
+        client.setName(clientDTO.getName());
+        Client updatedClient = clientRepository.save(client);
+        return Mapper.entityToDTO(updatedClient);
     }
 
     // HELPER METHODS
@@ -101,11 +106,5 @@ public class ClientService {
         return Mapper.entityToDTO(savedClient);
     }
 
-    @Transactional
-    public ClientDTO editClient(Long clientId, ClientDTO clientDTO) {
-        Client client = findClientById(clientId);
-        client.setName(clientDTO.getName());
-        Client updatedClient = clientRepository.save(client);
-        return Mapper.entityToDTO(updatedClient);
-    }
+
 }

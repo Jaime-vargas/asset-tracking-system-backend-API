@@ -44,7 +44,11 @@ public class ClientController {
         return ResponseEntity.noContent().build();
     }
 
-
+    @PutMapping("/{clientId}")
+    public ResponseEntity<ClientDTO> updateClient(@PathVariable Long clientId, @RequestBody ClientDTO clientDTO) {
+        ClientDTO updatedClient = clientService.editClient(clientId, clientDTO);
+        return ResponseEntity.ok(updatedClient);
+    }
 
 
     // #TODO: check endpoints below this comment
@@ -53,10 +57,6 @@ public class ClientController {
         ClientDTO createdClient = clientService.saveClient(clientDTO);
         return ResponseEntity.ok(createdClient);
     }
-    @PutMapping("/{clientId}")
-    public ResponseEntity<ClientDTO> updateClient(@PathVariable Long clientId, @RequestBody ClientDTO clientDTO) {
-        ClientDTO updatedClient = clientService.editClient(clientId, clientDTO);
-        return ResponseEntity.ok(updatedClient);
-    }
+
 
 }
