@@ -1,5 +1,6 @@
 package com.control_activos.sks.control_activos.controller;
 
+import com.control_activos.sks.control_activos.models.dto.BranchDTO;
 import com.control_activos.sks.control_activos.models.dto.ClientDTO;
 import com.control_activos.sks.control_activos.models.dto.PhotoDTO;
 import com.control_activos.sks.control_activos.models.dto.branchDTO.BranchTableDTO;
@@ -23,17 +24,23 @@ public class ClientController {
         this.clientService = clientService;
         this.filesService = filesService;
     }
-
+    /** Client endpoints */
     @GetMapping
     public ResponseEntity<List<ClientTableDTO>> getAllClientTableDTO() {
         List<ClientTableDTO> clients = clientService.getAllClientTableDTO();
         return ResponseEntity.ok(clients);
     }
 
-    @GetMapping("/{clientId}/branches")
-    public ResponseEntity<List<BranchTableDTO>> getAllBranchTableDTOByClientId(@PathVariable Long clientId) {
-        List<BranchTableDTO> branches = clientService.getAllBranchTableDTOByClientId(clientId);
-        return ResponseEntity.ok().body(branches);
+    @PostMapping
+    public ResponseEntity<ClientDTO> createClient(@RequestBody ClientDTO clientDTO) {
+        ClientDTO createdClient = clientService.saveClient(clientDTO);
+        return ResponseEntity.ok(createdClient);
+    }
+
+    @PutMapping("/{clientId}")
+    public ResponseEntity<ClientDTO> updateClient(@PathVariable Long clientId, @RequestBody ClientDTO clientDTO) {
+        ClientDTO updatedClient = clientService.editClient(clientId, clientDTO);
+        return ResponseEntity.ok(updatedClient);
     }
 
     @PostMapping("/{clientId}/photo")
@@ -44,19 +51,19 @@ public class ClientController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/{clientId}")
-    public ResponseEntity<ClientDTO> updateClient(@PathVariable Long clientId, @RequestBody ClientDTO clientDTO) {
-        ClientDTO updatedClient = clientService.editClient(clientId, clientDTO);
-        return ResponseEntity.ok(updatedClient);
+    /** Branch related endpoints */
+    @GetMapping("/{clientId}/branches")
+    public ResponseEntity<List<BranchTableDTO>> getAllBranchTableDTOByClientId(@PathVariable Long clientId) {
+        List<BranchTableDTO> branches = clientService.getAllBranchTableDTOByClientId(clientId);
+        return ResponseEntity.ok().body(branches);
     }
 
-
-    // #TODO: check endpoints below this comment
-    @PostMapping
-    public ResponseEntity<ClientDTO> createClient(@RequestBody ClientDTO clientDTO) {
-        ClientDTO createdClient = clientService.saveClient(clientDTO);
-        return ResponseEntity.ok(createdClient);
+    @PostMapping("/{clientId}/branches")
+    public ResponseEntity<BranchDTO> saveBranch(@PathVariable Long clientId, @RequestBody BranchDTO branchDTO) {
+        branchDTO = clientService.saveBranch(clientId, branchDTO);
+        return ResponseEntity.ok().body(branchDTO);
     }
+
 
 
 }

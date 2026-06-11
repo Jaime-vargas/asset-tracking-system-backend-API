@@ -40,7 +40,16 @@ public class BranchService {
         this.reportRepository = reportRepository;
     }
 
+    /** Branch services */
+    @Transactional
+    public BranchDTO editBranch(Long branchId, BranchDTO branchDTO) {
+        Branch branch = findBranchById(branchId);
+        branch.setName(branchDTO.getName());
+        branch = branchRepository.save(branch);
+        return Mapper.entityToDTO(branch);
+    }
 
+    /** Hardware related services */
     public List<HardwareTableDTO> getHardwareByBranchId(@PathVariable Long branchId){
         findBranchById(branchId);
         List<Hardware> hardwareList = hardwareRepository.findHardwareByBranchId(branchId);
@@ -48,7 +57,7 @@ public class BranchService {
         return mergeHardwareAndReportsToDTO(hardwareList, activeReports);
     }
 
-    // HELPER METHODS
+    /** Helper methods */
     private Map<Long, List<ReportCountDTO>> groupReportsById(List<ReportCountDTO> activeReports) {
         return activeReports.stream().collect(Collectors.groupingBy(ReportCountDTO::getId));
     }
@@ -62,34 +71,10 @@ public class BranchService {
         }).toList();
     }
 
-    // VALIDATIONS
+    /** Validations */
     public Branch findBranchById(Long sucursalId) {
         return branchRepository.findById(sucursalId)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         ResourceNotFoundExceptionEnum.BRANCH_NOT_FOUND.build(sucursalId)));
-    }
-
-    // #TODO: check functions below this comment
-
-    @Transactional
-    public BranchDTO saveBranch(Long clientId, BranchDTO branchDTO) {
-        Client client = clientService.findClientById(clientId);
-        Branch branch = new Branch();
-        branch.setClient(client);
-        branch.setName(branchDTO.getName());
-        branch = branchRepository.save(branch);
-        return Mapper.entityToDTO(branch);
-    }
-
-    @Transactional
-    public BranchDTO editBranch(Long clientId, Long sucursalId, BranchDTO branchDTO) {
-        Branch branch = findBranchById(sucursalId);
-        if (!branch.getClient().getId().equals(clientId)) {
-            throw new OperationNotAllowedException(
-                    OperationNotAllowedExceptionEnum.SUCURSAL_NOT_BELONG_TO_CLIENT.getMessage());
-        }
-        branch.setName(branchDTO.getName());
-        branch = branchRepository.save(branch);
-        return Mapper.entityToDTO(branch);
     }
 }

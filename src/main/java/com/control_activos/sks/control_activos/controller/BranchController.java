@@ -22,7 +22,14 @@ public class BranchController {
         this.cameraService = cameraService;
     }
 
+    /** Branch Endpoints */
+    @PutMapping("/{branchId}")
+    public ResponseEntity<BranchDTO> updateSucursal(@PathVariable Long branchId, @RequestBody BranchDTO branchDTO) {
+        branchDTO = branchService.editBranch(branchId, branchDTO);
+        return ResponseEntity.ok().body(branchDTO);
+    }
 
+    /** Hardware related endpoints  */
     @GetMapping("/{branchId}/hardware")
     public ResponseEntity<List<HardwareTableDTO>> getHardwareByBranchId(@PathVariable Long branchId){
         List<HardwareTableDTO> hardwareTableDTO = branchService.getHardwareByBranchId(branchId);
@@ -30,24 +37,8 @@ public class BranchController {
     }
 
     @PostMapping("/{branchId}/hardware")
-    public ResponseEntity<HardwareDetailDTO>saveCamera(@PathVariable Long branchId, @RequestBody CameraRequestDTO cameraRequestDTO){
+    public ResponseEntity<HardwareDetailDTO>createCamera(@PathVariable Long branchId, @RequestBody CameraRequestDTO cameraRequestDTO){
         HardwareDetailDTO hardwareDetailDTO = cameraService.saveCamera(branchId, cameraRequestDTO);
         return ResponseEntity.ok().body(hardwareDetailDTO);
-    }
-
-
-
-
-    // #TODO: check endpoints below this comment
-    @PostMapping
-    public ResponseEntity<BranchDTO> saveBranch(@RequestBody BranchDTO branchDTO) {
-        branchDTO = branchService.saveBranch(branchDTO.getId(), branchDTO); // TODO: Add clientId to BranchDTO and refactor this method to use it instead of hardcoding clientId in service layer
-        return ResponseEntity.ok().body(branchDTO);
-}
-
-    @PutMapping("/{branchId}")
-    public ResponseEntity<BranchDTO> updateSucursal(@PathVariable Long branchId, @RequestBody BranchDTO branchDTO) {
-        branchDTO = branchService.editBranch(branchId, branchId, branchDTO); // TODO: Add clientId to BranchDTO and refactor this method to use it instead of hardcoding clientId in service layer
-        return ResponseEntity.ok().body(branchDTO);
     }
 }

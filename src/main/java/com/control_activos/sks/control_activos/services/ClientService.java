@@ -4,6 +4,7 @@ import com.control_activos.sks.control_activos.enums.ResourceNotFoundExceptionEn
 import com.control_activos.sks.control_activos.exception.ResourceNotFoundException;
 import com.control_activos.sks.control_activos.mapper.BranchMapper;
 import com.control_activos.sks.control_activos.mapper.PhotoMapper;
+import com.control_activos.sks.control_activos.models.dto.BranchDTO;
 import com.control_activos.sks.control_activos.models.dto.ClientDTO;
 import com.control_activos.sks.control_activos.mapper.Mapper;
 import com.control_activos.sks.control_activos.models.dto.PhotoDTO;
@@ -38,6 +39,7 @@ public class ClientService {
         this.reportRepository = reportRepository;
     }
 
+    /** Client services */
     // GET ALL CLIENTS WITH ACTIVE REPORTS COUNT
     public List<ClientTableDTO> getAllClientTableDTO() {
         List<ClientTableRowDTO> clientRows = clientRepository.getClientTableRows();
@@ -45,15 +47,16 @@ public class ClientService {
         return MergeClientRowsAndActiveReportsToDTO(clientRows, allActiveReports);
     }
 
-    // GET ALL BRANCHES OF A CLIENT WITH ACTIVE REPORTS COUNT
-    public List<BranchTableDTO> getAllBranchTableDTOByClientId(Long clientId) {
-        findClientById(clientId); // Validate client existence
-        List<Branch> branchesById = branchRepository.findByClientId(clientId);
-        List<ReportCountDTO> activeReportsById = reportRepository.findActiveReportsByClientId(clientId);
-        return MergeBranchesAndActiveReportsToDTO(branchesById, activeReportsById);
+    // CREATE CLIENT
+    @Transactional
+    public ClientDTO saveClient(ClientDTO clientDTO) {
+        Client client = new Client();
+        client.setName(clientDTO.getName());
+        Client savedClient = clientRepository.save(client);
+        return Mapper.entityToDTO(savedClient);
     }
 
-    // EDIT CLIENT
+    // UPDATE CLIENT
     @Transactional
     public ClientDTO editClient(Long clientId, ClientDTO clientDTO) {
         Client client = findClientById(clientId);
@@ -62,7 +65,26 @@ public class ClientService {
         return Mapper.entityToDTO(updatedClient);
     }
 
-    // HELPER METHODS
+    /** Branch related services */
+    // GET ALL BRANCHES OF A CLIENT WITH ACTIVE REPORTS COUNT
+    public List<BranchTableDTO> getAllBranchTableDTOByClientId(Long clientId) {
+        findClientById(clientId); // Validate client existence
+        List<Branch> branchesById = branchRepository.findByClientId(clientId);
+        List<ReportCountDTO> activeReportsById = reportRepository.findActiveReportsByClientId(clientId);
+        return MergeBranchesAndActiveReportsToDTO(branchesById, activeReportsById);
+    }
+
+    @Transactional
+    public BranchDTO saveBranch(Long clientId, BranchDTO branchDTO) {
+        Client client = findClientById(clientId);
+        Branch branch = new Branch();
+        branch.setName(branchDTO.getName());
+        branch.setClient(client);
+        Branch savedBranch = branchRepository.save(branch);
+        return Mapper.entityToDTO(savedBranch);
+    }
+
+    /** Helper methods */
     private Map<Long, List<ReportCountDTO>> groupReportsById(List<ReportCountDTO> activeReports) {
         return activeReports.stream().collect(Collectors.groupingBy(ReportCountDTO::getId));
     }
@@ -88,23 +110,11 @@ public class ClientService {
         )).toList();
     }
 
-    // VALIDATIONS
+    /** Validations */
     public Client findClientById(Long clientId) {
         return clientRepository.findById(clientId)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         ResourceNotFoundExceptionEnum.CLIENT_NOT_FOUND.build(clientId)));
     }
-
-
-    // #TODO: chech functions below this comment
-
-    @Transactional
-    public ClientDTO saveClient(ClientDTO clientDTO) {
-        Client client = new Client();
-        client.setName(clientDTO.getName());
-        Client savedClient = clientRepository.save(client);
-        return Mapper.entityToDTO(savedClient);
-    }
-
 
 }
