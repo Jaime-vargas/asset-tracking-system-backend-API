@@ -96,11 +96,11 @@ public class TestingJwtController {
         return Base64.getEncoder().encodeToString(outputStream.toByteArray());
     }
 
-    @GetMapping("/qr/pdf")
-    public ResponseEntity<byte[]> photoReport (@RequestParam Long id) throws IOException {
+    @GetMapping("/qr/pdf/{branchId}")
+    public ResponseEntity<byte[]> photoReport (@PathVariable Long branchId) throws IOException {
 
 
-        byte[] pdf = generateQrPdf(id);
+        byte[] pdf = generateQrPdf(branchId);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
@@ -109,18 +109,13 @@ public class TestingJwtController {
 
     };
 
-    public byte[] generateQrPdf(Long id) throws IOException {
+    public byte[] generateQrPdf(Long branchId) throws IOException {
 
-        List<Camera> cameras = new ArrayList<>();
-        Camera camera = cameraService.findCameraById(id);
 
-        List<Hardware> hardwareList = hardwareRepository.findHardwareByBranchId(1L);
-
-        cameras.add(camera);
-
+        List<Hardware> hardwareList = hardwareRepository.findHardwareByBranchId(branchId);
 
         int qrWidth = 30;
-        int qrPadding = 6;
+        final int qrPadding = 6;
 
         double pageWidth = 192.0;
 
