@@ -1,23 +1,42 @@
 package com.control_activos.sks.control_activos.config;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
+@RequiredArgsConstructor
 public class SecurityConfiguration {
+
+    private final AuthenticationFilter authenticationFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        // HTTP FILTER CHAIN CONFIGURATION
         http
             .csrf(AbstractHttpConfigurer::disable)
+                // JWT = STATELESS
+            .sessionManagement(session ->
+                    session.sessionCreationPolicy(
+                            SessionCreationPolicy.STATELESS
+                            ))
+                // ACCESS RULES
             .authorizeHttpRequests(auth -> auth
-                    .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                    //temp for view images
+                    .requestMatchers("/uploads/**").permitAll()
+                    .requestMatchers("/api/v1/**").permitAll()
+                    .requestMatchers("/test/public").permitAll()
+                    .requestMatchers(HttpMethod.OPTIONS,"/**").permitAll()
                     .anyRequest().permitAll()
-            );
+            ).addFilterBefore(
+                authenticationFilter, UsernamePasswordAuthenticationFilter.class
+                );
         corsConfiguration(http);
         return http.build();
     }

@@ -6,6 +6,7 @@ import com.control_activos.sks.control_activos.models.dto.hardwareDTO.HardwareDe
 import com.control_activos.sks.control_activos.models.dto.hardwareDTO.HardwareTableDTO;
 import com.control_activos.sks.control_activos.services.BranchService;
 import com.control_activos.sks.control_activos.services.CameraService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

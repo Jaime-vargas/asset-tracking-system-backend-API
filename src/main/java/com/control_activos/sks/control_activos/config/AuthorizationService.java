@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class AuthService {
+public class AuthorizationService {
 
     private final JwtUtil jwtUtil;
     private final PasswordConfig passwordConfig;
@@ -39,7 +39,7 @@ public class AuthService {
         // 3. Generate JWT token if the credentials are valid.
         return new LoginResponse(
                 userEntity.getUsername(),
-                userEntity.getRole().name(),
+                userEntity.getRole().getValue(),
                 jwtUtil.generateToken(userEntity.getUsername(), userEntity.getRole().name()));
     }
 }
