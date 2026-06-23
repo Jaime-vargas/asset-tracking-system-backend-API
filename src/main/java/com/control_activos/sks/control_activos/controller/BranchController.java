@@ -14,18 +14,20 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/branches")
+@RequiredArgsConstructor
 public class BranchController {
 
     private final BranchService branchService;
     private final CameraService cameraService;
-    public BranchController(BranchService branchService,  CameraService cameraService) {
-        this.branchService = branchService;
-        this.cameraService = cameraService;
-    }
 
+<<<<<<< HEAD
     /** Branch Endpoints */
     @PutMapping("/{branchId}")
     public ResponseEntity<BranchDTO> updateSucursal(@PathVariable Long branchId, @RequestBody BranchDTO branchDTO) {
+=======
+    @PutMapping("/{branchId}")
+    public ResponseEntity<BranchDTO> updateBranch(@PathVariable Long branchId, @RequestBody BranchDTO branchDTO) {
+>>>>>>> 0464c3d (new contrllers on branch and client entities)
         branchDTO = branchService.editBranch(branchId, branchDTO);
         return ResponseEntity.ok().body(branchDTO);
     }

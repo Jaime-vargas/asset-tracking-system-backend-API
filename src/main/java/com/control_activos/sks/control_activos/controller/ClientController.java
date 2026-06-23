@@ -5,8 +5,10 @@ import com.control_activos.sks.control_activos.models.dto.ClientDTO;
 import com.control_activos.sks.control_activos.models.dto.PhotoDTO;
 import com.control_activos.sks.control_activos.models.dto.branchDTO.BranchTableDTO;
 import com.control_activos.sks.control_activos.models.dto.clientDTO.ClientTableDTO;
+import com.control_activos.sks.control_activos.services.BranchService;
 import com.control_activos.sks.control_activos.services.ClientService;
 import com.control_activos.sks.control_activos.services.FilesService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,10 +17,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/clients")
+@RequiredArgsConstructor
 public class ClientController {
 
+    private final BranchService branchService;
     private final ClientService clientService;
     private final FilesService filesService;
+
 
     public ClientController(ClientService clientService, FilesService filesService) {
         this.clientService = clientService;
@@ -32,7 +37,7 @@ public class ClientController {
     }
 
     @PostMapping
-    public ResponseEntity<ClientDTO> createClient(@RequestBody ClientDTO clientDTO) {
+    public ResponseEntity<ClientDTO> createClient (@RequestBody ClientDTO clientDTO){
         ClientDTO createdClient = clientService.saveClient(clientDTO);
         return ResponseEntity.ok(createdClient);
     }
@@ -43,12 +48,18 @@ public class ClientController {
         return ResponseEntity.ok(updatedClient);
     }
 
+
+
+
+
+
     @PostMapping("/{clientId}/photo")
-    public ResponseEntity<?> addPhoto(@PathVariable Long clientId,
-                                      @RequestPart("file")MultipartFile file,
-                                      @RequestParam(defaultValue = "false") Boolean replaceExisting) {
-        filesService.UploadClientPhoto(clientId, file, replaceExisting);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<ClientTableDTO> addPhoto (@PathVariable Long clientId,
+            @RequestPart("file") MultipartFile file,
+            @RequestParam(defaultValue = "false") Boolean replaceExisting) {
+        ClientTableDTO updatedClient = filesService.UploadCligit entPhoto(clientId, file, replaceExisting);
+
+        return ResponseEntity.ok(updatedClient);
     }
 
     /** Branch related endpoints */
@@ -59,11 +70,9 @@ public class ClientController {
     }
 
     @PostMapping("/{clientId}/branches")
-    public ResponseEntity<BranchDTO> saveBranch(@PathVariable Long clientId, @RequestBody BranchDTO branchDTO) {
+    public ResponseEntity<BranchDTO> saveBranch (@PathVariable Long clientId, @RequestBody BranchDTO
+    branchDTO){
         branchDTO = clientService.saveBranch(clientId, branchDTO);
         return ResponseEntity.ok().body(branchDTO);
     }
-
-
-
 }

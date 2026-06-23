@@ -22,7 +22,7 @@ public class UserEntity {
     private String username;
     @Column(nullable = false)
     private String password;
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String fullName;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

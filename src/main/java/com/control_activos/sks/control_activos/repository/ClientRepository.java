@@ -1,5 +1,6 @@
 package com.control_activos.sks.control_activos.repository;
 
+import com.control_activos.sks.control_activos.models.dto.clientDTO.ClientTableDTO;
 import com.control_activos.sks.control_activos.models.dto.clientDTO.ClientTableRowDTO;
 import com.control_activos.sks.control_activos.models.dto.reportDTO.ReportCountDTO;
 import com.control_activos.sks.control_activos.models.entity.Branch;
@@ -31,4 +32,22 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
         ORDER BY c.name ASC
     """)
     List<ClientTableRowDTO> getClientTableRows();
+
+    @Query("""
+        SELECT new com.control_activos.sks.control_activos.models.dto.clientDTO.ClientTableRowDTO(
+            c.id,
+            c.name,
+            COUNT(DISTINCT b.id),
+            COUNT(DISTINCT h.id),
+            c.photo
+        )
+        FROM Client c
+        LEFT JOIN c.photo p
+        LEFT JOIN c.branches b
+        LEFT JOIN b.hardware h
+        WHERE c.id = :clientId
+        GROUP BY c.id, c.name
+        ORDER BY c.name ASC
+    """)
+    List<ClientTableRowDTO> getClientTableRowByClientId(Long clientId);
 }

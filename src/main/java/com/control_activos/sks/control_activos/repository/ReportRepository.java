@@ -33,6 +33,19 @@ public interface ReportRepository extends JpaRepository<Report, Long> {
 """)
     List<ReportCountDTO> getAllActiveReportsGroupedByClientId();
 
+    // LIST OF ALL ACTIVE REPORTS OF A CLIENT BY CLIENT ID
+    @Query("""
+    SELECT new com.control_activos.sks.control_activos.models.dto.reportDTO.ReportCountDTO(
+        r.hardware.branch.client.id,
+        r.id,
+        r.dueDate
+    )
+    FROM Report r
+    WHERE r.status = true and r.hardware.branch.client.id = :clientId
+""")
+    List<ReportCountDTO> getAllActiveReportsOfAClientByClientId(Long clientId);
+
+
     // LIST OF ALL ACTIVE REPORTS GROUPED BY HARDWARE ID
     @Query("""
     SELECT new com.control_activos.sks.control_activos.models.dto.reportDTO.ReportCountDTO(
