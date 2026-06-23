@@ -74,6 +74,20 @@ public class ClientService {
         return MergeBranchesAndActiveReportsToDTO(branchesById, activeReportsById);
     }
 
+
+
+    /**********************************/
+
+    // GET CLIENT WITH ACTIVE REPORTS COUNT
+    public List<ClientTableDTO> getClientTableDTOByClientId(Long clientId) {
+        List<ClientTableRowDTO>  clientTableDTO = clientRepository.getClientTableRowByClientId(clientId);
+        List<ReportCountDTO> activeReportsById = reportRepository.getAllActiveReportsOfAClientByClientId(clientId);
+        return MergeClientRowsAndActiveReportsToDTO(clientTableDTO, activeReportsById);
+    }
+
+    /**********************************/
+
+    // EDIT CLIENT
     @Transactional
     public BranchDTO saveBranch(Long clientId, BranchDTO branchDTO) {
         Client client = findClientById(clientId);
