@@ -15,18 +15,17 @@ import com.control_activos.sks.control_activos.models.dto.UserEntityRoleDTO;
 import com.control_activos.sks.control_activos.models.entity.UserEntity;
 import com.control_activos.sks.control_activos.repository.UserEntityRepository;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class UserEntityService {
 
     private final UserEntityRepository userEntityRepository;
-    public UserEntityService(UserEntityRepository userEntityRepository) {
-        this.userEntityRepository = userEntityRepository;
-    }
 
     public List<UserEntityResponseDTO> getUserEntityDTOList (){
         List<UserEntity> userEntityList = userEntityRepository.findAll();
@@ -47,7 +46,7 @@ public class UserEntityService {
     }
     @Transactional
     public UserEntityResponseDTO updateUserEntity(Long userEntityId, UserEntityResponseDTO userEntityResponseDTO){
-        UserEntity userEntity = findByUserEntityId(userEntityId);
+        UserEntity userEntity = findByUserEntityById(userEntityId);
         setDataToUpdatedEntity(userEntity, userEntityResponseDTO);
         userEntity = userEntityRepository.save(userEntity);
         return Mapper.entityToDTO(userEntity);
@@ -55,7 +54,7 @@ public class UserEntityService {
     // #TODO check implementation after apply bcrypt
     // #TODO implement enum Errors for password
     public void updateUserEntityPassword(Long userEntityId, UserEntityPasswordRequestDTO userEntityPasswordRequestDTO){
-        UserEntity userEntity = findByUserEntityId(userEntityId);
+        UserEntity userEntity = findByUserEntityById(userEntityId);
         if(!userEntity.getPassword().equals(userEntityPasswordRequestDTO.oldPassword())){
             throw new OperationNotAllowedException(OperationNotAllowedExceptionEnum.USER_PASSWORD_DONT_MATCH.getMessage());
         }
@@ -63,10 +62,16 @@ public class UserEntityService {
         userEntityRepository.save(userEntity);
     }
 
-    public UserEntity findByUserEntityId (Long userEntityId){
+    public UserEntity findByUserEntityById(Long userEntityId){
         return userEntityRepository.findById(userEntityId).orElseThrow(
                 ()-> new ResourceNotFoundException(ResourceNotFoundExceptionEnum
                         .USER_NOT_FOUND.build(userEntityId)));
+    }
+
+    public UserEntity findByUserEntityByUsername(String username){
+        return userEntityRepository.findByUsername(username).orElseThrow(
+                () -> new ResourceNotFoundException(ResourceNotFoundExceptionEnum.RESOURCE_NOT_FOUND.build(username))
+        );
     }
 
     public void setDataToUpdatedEntity(UserEntity userEntity, UserEntityResponseDTO userEntityResponseDTO ){

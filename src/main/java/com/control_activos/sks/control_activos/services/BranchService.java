@@ -40,6 +40,7 @@ public class BranchService {
         this.reportRepository = reportRepository;
     }
 
+<<<<<<< HEAD
     /** Branch services */
     @Transactional
     public BranchDTO editBranch(Long branchId, BranchDTO branchDTO) {
@@ -50,6 +51,8 @@ public class BranchService {
     }
 
     /** Hardware related services */
+=======
+>>>>>>> b6960bb (new services for users coment now implements users, updatoes on branch and client services)
     public List<HardwareTableDTO> getHardwareByBranchId(@PathVariable Long branchId){
         findBranchById(branchId);
         List<Hardware> hardwareList = hardwareRepository.findHardwareByBranchId(branchId);
@@ -57,7 +60,28 @@ public class BranchService {
         return mergeHardwareAndReportsToDTO(hardwareList, activeReports);
     }
 
+<<<<<<< HEAD
     /** Helper methods */
+=======
+    @Transactional
+    public BranchDTO saveBranch(Long clientId, BranchDTO branchDTO) {
+        Client client = clientService.findClientById(clientId);
+        Branch branch = new Branch();
+        branch.setClient(client);
+        branch.setName(branchDTO.getName());
+        branch = branchRepository.save(branch);
+        return Mapper.entityToDTO(branch);
+    }
+
+    @Transactional
+    public BranchDTO editBranch(Long branchId, BranchDTO branchDTO) {
+        Branch branch = findBranchById(branchId);
+        branch.setName(branchDTO.getName());
+        return Mapper.entityToDTO(branch);
+    }
+
+    // HELPER METHODS
+>>>>>>> b6960bb (new services for users coment now implements users, updatoes on branch and client services)
     private Map<Long, List<ReportCountDTO>> groupReportsById(List<ReportCountDTO> activeReports) {
         return activeReports.stream().collect(Collectors.groupingBy(ReportCountDTO::getId));
     }

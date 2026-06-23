@@ -3,6 +3,7 @@ package com.control_activos.sks.control_activos.services;
 import com.control_activos.sks.control_activos.enums.CameraPhotoUploads;
 import com.control_activos.sks.control_activos.enums.FileEnum;
 import com.control_activos.sks.control_activos.exception.FileException;
+import com.control_activos.sks.control_activos.models.dto.clientDTO.ClientTableDTO;
 import com.control_activos.sks.control_activos.models.entity.Camera;
 import com.control_activos.sks.control_activos.models.entity.Client;
 import com.control_activos.sks.control_activos.models.entity.Photo;
@@ -36,7 +37,7 @@ public class FilesService {
     }
 
     @Transactional
-    public void UploadClientPhoto(Long clientId, MultipartFile file, Boolean replaceExisting) {
+    public ClientTableDTO UploadClientPhoto(Long clientId, MultipartFile file, Boolean replaceExisting) {
         Client client = clientService.findClientById(clientId);
         validateIsImage(file);
 
@@ -57,6 +58,7 @@ public class FilesService {
         }
 
         client.setPhoto(saveFileToPath(file, storePath));
+
     }
 
     @Transactional

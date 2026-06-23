@@ -11,27 +11,26 @@ import com.control_activos.sks.control_activos.models.entity.Comment;
 import com.control_activos.sks.control_activos.models.entity.Report;
 import com.control_activos.sks.control_activos.models.entity.UserEntity;
 import com.control_activos.sks.control_activos.repository.CommentRepository;
+import com.control_activos.sks.control_activos.repository.ReportRepository;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
 
 @Service
+@RequiredArgsConstructor
 public class CommentService {
 
-    @Autowired
-    private UserEntityService userEntityService;
-
+    private final UserEntityService userEntityService;
 
     private final CommentRepository commentRepository;
     private final FormatDataValidationService formatDataValidationService;
     private final ReportService reportService;
-    public CommentService(CommentRepository commentRepository, FormatDataValidationService formatDataValidationService, ReportService reportService) {
-        this.commentRepository = commentRepository;
-        this.formatDataValidationService = formatDataValidationService;
-        this.reportService = reportService;
-    }
+
 
     // HERE BEGINS THE COMMENT SERVICE METHODS VERIFIED WITH ANGULAR FRONTEND.
     @Transactional
@@ -42,8 +41,13 @@ public class CommentService {
         Comment comment = new Comment();
         comment.setText(formatDataValidationService.lowerCase(commentRequestDTO.getText()));
         comment.setCreatedAt(OffsetDateTime.now());
-        UserEntity user = userEntityService.findByUserEntityId(1L);
-        comment.setUser(user); // #TODO Implements get real user
+
+        // User Implementation Testing
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        UserEntity user = userEntityService.findByUserEntityByUsername(username);
+        comment.setUser(user);
+
         comment.setReport(report);
         comment = commentRepository.save(comment);
         return Mapper.entityToDTO(comment);
@@ -78,7 +82,7 @@ public class CommentService {
     // #TODO Implemnts validation for current user edit
     public void checkIfSameUser(Comment comment){
         // TODO Implements get real user
-        UserEntity user = userEntityService.findByUserEntityId(1L);
+        UserEntity user = userEntityService.findByUserEntityById(1L);
         if (!comment.getUser().equals(user)){
             throw new OperationNotAllowedException(OperationNotAllowedExceptionEnum
                     .USER_COMMENT_DONT_MATCH.getMessage());
