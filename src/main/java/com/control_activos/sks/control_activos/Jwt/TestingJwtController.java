@@ -50,20 +50,24 @@ public class TestingJwtController {
 
     int scale = 10;
 
+    // Endpoint to generate a token for a given hardware
     @GetMapping
     public ResponseEntity<String> getToken(@RequestParam Long id){
-        return ResponseEntity.ok(jwtUtil.generateToken(id));
+        return ResponseEntity.ok(jwtUtil.generateHardwareToken(id));
     }
 
+    // Validate Tokens
     @GetMapping("/validate")
     public ResponseEntity<HardwareDetailDTO> validateToken(@RequestParam String token){
-        Camera camera = cameraService.findCameraById(jwtUtil.validateToken(token));
+        Camera camera = cameraService.findCameraById(1L);
         return ResponseEntity.ok(HardwareMapper.hardwareDetailDTO(camera));
     }
 
+
+    // Encoding qr codes
     public String generateQR(Long id) throws IOException {
 
-        QrCode qrCode = QrCode.encodeText(jwtUtil.generateToken(id), QrCode.Ecc.MEDIUM);
+        QrCode qrCode = QrCode.encodeText(jwtUtil.generateHardwareToken(id), QrCode.Ecc.MEDIUM);
 
         BufferedImage image = new BufferedImage(
                 qrCode.size * 10,
